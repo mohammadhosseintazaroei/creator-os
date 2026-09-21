@@ -775,12 +775,15 @@
             border: 1px solid #e7ddf7;
             border-radius: 18px;
             padding: 28px;
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif
+            font-family: inherit
         }
 
         .export-vision-sheet {
             direction: rtl;
-            unicode-bidi: isolate
+            unicode-bidi: isolate;
+            text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            font-synthesis: none
         }
 
         /* Explicit RTL for the cloned mind-map. html2canvas can lose the
@@ -2257,15 +2260,45 @@
             // text-bearing node explicit so Persian and mixed Persian/English
             // content render identically in PNG and PDF.
             nodesClone.querySelectorAll('.node').forEach(node => {
+                const liveNode = nodesEl.querySelector('.node[data-id="' + node.dataset.id + '"]');
+                const liveTitle = liveNode?.querySelector('.title');
+                const liveSub = liveNode?.querySelector('.sub');
+
+                // Typography must be copied from the live node. The export surface
+                // intentionally lives outside the transformed world, so relying on
+                // inherited/viewport styles can produce a different font metric or
+                // apparent size in the rasterized result.
+                const copyTypography = (source, target) => {
+                    if (!source || !target) return;
+                    const cs = getComputedStyle(source);
+                    [
+                        'fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight',
+                        'letterSpacing', 'wordSpacing', 'textTransform', 'textDecoration',
+                        'fontKerning', 'fontFeatureSettings', 'fontVariationSettings',
+                        'textRendering'
+                    ].forEach(prop => {
+                        const value = cs[prop];
+                        if (value && value !== 'normal' || prop === 'fontFamily' || prop === 'fontSize' || prop === 'lineHeight') {
+                            target.style[prop] = value;
+                        }
+                    });
+                    target.style.textSizeAdjust = '100%';
+                    target.style.webkitTextSizeAdjust = '100%';
+                };
+
                 node.setAttribute('dir', 'rtl');
                 node.style.direction = 'rtl';
                 node.style.textAlign = node.classList.contains('dark') ? 'center' : 'right';
                 node.style.unicodeBidi = 'plaintext';
+                copyTypography(liveNode, node);
+
                 node.querySelectorAll('.title, .sub').forEach(el => {
+                    const source = el.classList.contains('title') ? liveTitle : liveSub;
                     el.setAttribute('dir', 'rtl');
                     el.style.direction = 'rtl';
                     el.style.unicodeBidi = 'plaintext';
                     el.style.textAlign = node.classList.contains('dark') ? 'center' : 'right';
+                    copyTypography(source, el);
                 });
                 node.querySelectorAll('pre, pre code').forEach(el => {
                     el.setAttribute('dir', 'ltr');
