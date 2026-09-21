@@ -778,6 +778,39 @@
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif
         }
 
+        .export-vision-sheet {
+            direction: rtl;
+            unicode-bidi: isolate
+        }
+
+        /* Explicit RTL for the cloned mind-map. html2canvas can lose the
+           inherited <html dir="rtl"> on an off-screen export surface. */
+        .export-vision-sheet .export-vision-layer,
+        .export-vision-sheet .node {
+            direction: rtl;
+            unicode-bidi: plaintext;
+            text-align: right
+        }
+
+        .export-vision-sheet .node .title,
+        .export-vision-sheet .node .sub {
+            direction: rtl;
+            unicode-bidi: plaintext;
+            text-align: right
+        }
+
+        .export-vision-sheet .node.dark {
+            direction: rtl;
+            text-align: center
+        }
+
+        .export-vision-sheet .node .sub pre,
+        .export-vision-sheet .node .sub pre code {
+            direction: ltr;
+            unicode-bidi: isolate;
+            text-align: left
+        }
+
         .export-sheet-title {
             font-size: 30px;
             line-height: 1.25;
@@ -2185,7 +2218,8 @@
             sheet.style.overflow = 'hidden';
             sheet.style.position = 'relative';
             sheet.style.background = '#f8f9fc';
-            sheet.style.direction = 'ltr';
+            sheet.style.direction = 'rtl';
+            sheet.setAttribute('dir', 'rtl');
 
             // Clone only the visual layers. This avoids the live viewport, zoom, pan,
             // clipping and the fixed 2600×1800 world from affecting the export.
@@ -2209,12 +2243,37 @@
 
             const nodesClone = nodesEl.cloneNode(true);
             nodesClone.removeAttribute('id');
+            nodesClone.setAttribute('dir', 'rtl');
             nodesClone.style.position = 'absolute';
             nodesClone.style.left = '0';
             nodesClone.style.top = '0';
             nodesClone.style.width = '1px';
             nodesClone.style.height = '1px';
             nodesClone.style.overflow = 'visible';
+            nodesClone.style.direction = 'rtl';
+            nodesClone.style.unicodeBidi = 'isolate';
+
+            // Do not rely on inherited direction in the live app. Make every
+            // text-bearing node explicit so Persian and mixed Persian/English
+            // content render identically in PNG and PDF.
+            nodesClone.querySelectorAll('.node').forEach(node => {
+                node.setAttribute('dir', 'rtl');
+                node.style.direction = 'rtl';
+                node.style.textAlign = node.classList.contains('dark') ? 'center' : 'right';
+                node.style.unicodeBidi = 'plaintext';
+                node.querySelectorAll('.title, .sub').forEach(el => {
+                    el.setAttribute('dir', 'rtl');
+                    el.style.direction = 'rtl';
+                    el.style.unicodeBidi = 'plaintext';
+                    el.style.textAlign = node.classList.contains('dark') ? 'center' : 'right';
+                });
+                node.querySelectorAll('pre, pre code').forEach(el => {
+                    el.setAttribute('dir', 'ltr');
+                    el.style.direction = 'ltr';
+                    el.style.unicodeBidi = 'isolate';
+                    el.style.textAlign = 'left';
+                });
+            });
 
             layer.appendChild(linksClone);
             layer.appendChild(nodesClone);
