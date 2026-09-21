@@ -449,14 +449,44 @@
             bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: rgba(31, 41, 55, .88);
             color: #fff;
-            padding: 8px 12px;
+            padding: 8px 9px 8px 12px;
             border-radius: 999px;
             font-size: 11px;
-            pointer-events: none;
-            opacity: .9;
-            z-index: 5
+            pointer-events: auto;
+            opacity: .92;
+            z-index: 5;
+            max-width: min(720px, calc(100% - 28px));
+        }
+
+        .hint span {
+            min-width: 0;
+        }
+
+        .hint button {
+            flex: 0 0 auto;
+            width: 22px;
+            height: 22px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .14);
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 20px;
+            padding: 0;
+        }
+
+        .hint button:hover {
+            background: rgba(255, 255, 255, .24);
+        }
+
+        body.hint-dismissed #hint {
+            display: none;
         }
 
         .zoom {
@@ -1198,23 +1228,38 @@
         }
 
         @media(max-width:850px) {
+
+            /* Mobile header: two stable rows instead of wrapping an oversized toolbar.
+               The action row scrolls horizontally so no control is squeezed, clipped,
+               or pushed outside the viewport. */
             .topbar {
-                height: 58px;
-                padding: 8px 10px;
+                height: auto;
+                min-height: 104px;
+                padding: 8px 10px 7px;
                 gap: 7px;
                 position: relative;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: center;
+                overflow: hidden;
+                flex: 0 0 auto;
             }
 
             .brand {
-                margin: 0 auto 0 0;
-                min-width: 0
+                width: 100%;
+                min-width: 0;
+                min-height: 36px;
+                margin: 0;
+                justify-content: flex-start;
+                flex: 0 0 auto;
             }
 
             .brand h1 {
                 font-size: 13px;
                 white-space: nowrap;
                 overflow: hidden;
-                text-overflow: ellipsis
+                text-overflow: ellipsis;
+                max-width: calc(100vw - 68px);
             }
 
             .brand span {
@@ -1230,22 +1275,70 @@
             }
 
             .actions {
-                gap: 5px
+                width: 100%;
+                min-width: 0;
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 6px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0 1px 2px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                overscroll-behavior-x: contain;
+                direction: rtl;
+                flex: 0 0 auto;
+            }
+
+            .actions::-webkit-scrollbar {
+                display: none
             }
 
             .actions .optional {
                 display: none
             }
 
+            /* Keep the mobile header intentionally small; advanced actions live in More. */
+            .actions #formatHBtn,
+            .actions #formatVBtn {
+                display: none;
+            }
+
+            .actions #pagesBtn,
+            .actions #saveBtn,
+            .actions #addBtn,
+            .actions #tourBtn,
+            .actions #mobileMoreBtn {
+                display: flex;
+            }
+
+            .actions #tourBtn,
+            .actions #mobileMoreBtn {
+                display: flex
+            }
+
+            .mobile-quick {
+                display: flex
+            }
+
+            .mobile-simple-tools {
+                display: block
+            }
+
             .btn {
-                min-height: 38px;
-                padding: 8px 9px;
-                font-size: 11px
+                min-height: 36px;
+                height: 36px;
+                padding: 7px 10px;
+                font-size: 11px;
+                line-height: 1;
+                white-space: nowrap;
+                flex: 0 0 auto;
             }
 
             .main {
                 position: relative;
-                min-height: 0
+                min-height: 0;
+                flex: 1 1 auto;
             }
 
             .sidebar {
@@ -1266,7 +1359,16 @@
                 transform: none
             }
 
+            .sidebar {
+                border-radius: 18px 0 0 18px;
+                padding: 14px;
+            }
+
             .menu-btn {
+                display: none !important
+            }
+
+            .mobile-quick {
                 display: flex !important
             }
 
@@ -1274,28 +1376,34 @@
                 touch-action: none
             }
 
+            /* Shortcut hint is desktop-only; mobile gestures are explained in the tour. */
             .hint {
-                bottom: 58px;
-                max-width: calc(100% - 30px);
-                text-align: center;
-                white-space: normal;
-                font-size: 10px;
-                padding: 7px 10px;
+                display: none !important;
             }
 
             .zoom {
                 left: 10px;
-                bottom: 10px
+                bottom: 10px;
+                transform: scale(1.08);
+                transform-origin: bottom left;
             }
+
         }
 
         @media(max-width:520px) {
             .topbar {
-                height: 54px
+                min-height: 102px;
+                padding: 7px 8px 6px;
+                gap: 6px;
+            }
+
+            .actions {
+                gap: 5px;
+                padding-bottom: 2px;
             }
 
             .actions .primary {
-                display: none
+                display: flex
             }
 
             .logo {
@@ -1336,6 +1444,123 @@
                 display: none !important
             }
         }
+
+        /* First-run guided tour */
+        .tour-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .38);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .18s ease
+        }
+
+        .tour-backdrop.open {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        .tour-focus {
+            position: fixed;
+            z-index: 1002;
+            pointer-events: none;
+            border: 2px solid #818cf8;
+            border-radius: 14px;
+            box-shadow: 0 0 0 5px rgba(129, 140, 248, .18), 0 12px 40px rgba(15, 23, 42, .22);
+            transition: all .18s ease
+        }
+
+        .tour-card {
+            position: fixed;
+            z-index: 1003;
+            width: min(360px, calc(100vw - 28px));
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, .24);
+            padding: 16px;
+            direction: rtl
+        }
+
+        .tour-kicker {
+            font-size: 10px;
+            color: #6366f1;
+            font-weight: 800;
+            margin-bottom: 5px
+        }
+
+        .tour-card h3 {
+            margin: 0 0 7px;
+            font-size: 15px
+        }
+
+        .tour-card p {
+            margin: 0;
+            color: #475569;
+            font-size: 12px;
+            line-height: 1.9
+        }
+
+        .tour-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 14px
+        }
+
+        .tour-actions .tour-skip {
+            margin-left: auto;
+            border: 0;
+            background: transparent;
+            color: #64748b;
+            font-size: 11px;
+            padding: 7px
+        }
+
+        .tour-actions button:not(.tour-skip) {
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            border-radius: 9px;
+            padding: 8px 12px;
+            font-size: 11px
+        }
+
+        .tour-actions .tour-next {
+            background: #6366f1 !important;
+            color: #fff;
+            border-color: #6366f1
+        }
+
+        .tour-progress {
+            font-size: 10px;
+            color: #94a3b8;
+            white-space: nowrap
+        }
+
+        .mobile-quick {
+            display: none
+        }
+
+        @media(max-width:850px) {
+            .tour-card {
+                width: min(350px, calc(100vw - 20px));
+                padding: 14px
+            }
+
+            .tour-card h3 {
+                font-size: 14px
+            }
+
+            .tour-card p {
+                font-size: 11px;
+                line-height: 1.85
+            }
+
+            .tour-focus {
+                border-radius: 12px
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -1352,6 +1577,8 @@
             </div>
             <div class="actions">
                 <button class="btn menu-btn" id="menuBtn">☰ ابزارها</button>
+                <button class="btn" id="tourBtn">? راهنمای سریع</button>
+                <button class="btn mobile-quick" id="mobileMoreBtn">☰ بیشتر</button>
                 <button class="btn" id="addBtn">＋ نود جدید</button>
                 <button class="btn optional" id="undoBtn">↶ Undo</button><button class="btn optional" id="redoBtn">↷
                     Redo</button>
@@ -1411,6 +1638,22 @@
                     <button class="btn danger" id="deleteBtn">حذف نود انتخاب‌شده</button>
                 </div>
 
+                <div class="section mobile-simple-tools">
+                    <h2>دسترسی سریع</h2>
+                    <div class="tool-grid">
+                        <button class="tool" id="sidebarPngBtn"><strong>🖼 خروجی PNG</strong><small>از صفحه
+                                فعلی</small></button>
+                        <button class="tool" id="sidebarPdfBtn"><strong>📄 خروجی PDF</strong><small>از صفحه
+                                فعلی</small></button>
+                        <button class="tool" id="sidebarFormatHBtn"><strong>↔ چیدمان افقی</strong><small>مرتب‌سازی
+                                نودها</small></button>
+                        <button class="tool" id="sidebarFormatVBtn"><strong>↕ چیدمان عمودی</strong><small>مرتب‌سازی
+                                نودها</small></button>
+                    </div>
+                    <button class="btn" id="sidebarTourBtn" style="width:100%;margin-top:8px">? آموزش
+                        مرحله‌به‌مرحله</button>
+                </div>
+
                 <div class="section">
                     <h2>راهنما</h2>
                     <p>برای اتصال: روی «اتصال نودها» بزن، نود والد و سپس نود فرزند را کلیک کن. برای انتخاب/ویرایش کافی
@@ -1434,8 +1677,9 @@
                     </div>
                     <div id="plannerView" class="planner-view"></div>
                 </div>
-                <div class="hint" id="hint">Drag برای جابه‌جایی • Space + Drag برای Pan • Ctrl/Cmd + Wheel برای Zoom •
-                    Double-click روی Title یا Description برای ویرایش مستقیم</div>
+                <div class="hint" id="hint"><span>Drag برای جابه‌جایی • فضای خالی را بکش برای حرکت • دو انگشت برای Zoom
+                        • Double-click برای ویرایش</span><button id="hintClose" aria-label="بستن راهنمای میانبرها"
+                        title="بستن">×</button></div>
                 <div class="zoom"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button
                         id="zoomIn">＋</button></div>
             </section>
@@ -1495,13 +1739,27 @@
         </div>
     </div>
     <input type="file" id="fileInput" accept=".json,application/json" hidden>
+    <div class="tour-backdrop" id="tourBackdrop" aria-hidden="true"></div>
+    <div class="tour-focus" id="tourFocus" aria-hidden="true"></div>
+    <div class="tour-card" id="tourCard" role="dialog" aria-modal="true" aria-labelledby="tourTitle"
+        aria-describedby="tourText" hidden>
+        <div class="tour-kicker" id="tourKicker">آموزش سریع</div>
+        <h3 id="tourTitle"></h3>
+        <p id="tourText"></p>
+        <div class="tour-actions">
+            <button class="tour-skip" id="tourSkip">رد کردن آموزش</button>
+            <span class="tour-progress" id="tourProgress"></span>
+            <button id="tourPrev">قبلی</button>
+            <button class="tour-next" id="tourNext">بعدی</button>
+        </div>
+    </div>
     <div class="toast" id="toast"></div>
 
     <script>
         const STORAGE = 'creator-vision-board-v2';
         const state = {
             nodes: [], links: [], selected: null, connectMode: false,
-            scale: 1, panX: 0, panY: 0, dragging: null, uniformFormat: false,
+            scale: 1.15, panX: 0, panY: 0, dragging: null, uniformFormat: false,
             pages: [], activePageId: null, pageType: 'vision'
         };
         const history = { undo: [], redo: [], limit: 80 };
@@ -1743,7 +2001,7 @@
             checkpoint();
             const rect = wrap.getBoundingClientRect();
             state.dragging = { id, ox: (e.clientX - rect.left - state.panX) / state.scale - n.x, oy: (e.clientY - rect.top - state.panY) / state.scale - n.y };
-            try { e.currentTarget.setPointerCapture(e.pointerId) } catch { }
+            if (e.pointerType !== 'touch') { try { e.currentTarget.setPointerCapture(e.pointerId) } catch { } }
         }
         wrap.addEventListener('pointermove', e => {
             if (!state.dragging?.id) return;
@@ -2168,14 +2426,14 @@
         }
         function toggleConnect() { state.connectMode = !state.connectMode; state.dragging = null; $('connectBtn').classList.toggle('primary', state.connectMode); toast(state.connectMode ? 'نود مبدأ و سپس مقصد را کلیک کن' : 'حالت اتصال خاموش شد') }
         function applyTransform() { world.style.transform = `translate(${state.panX}px,${state.panY}px) scale(${state.scale})`; $('zoomLabel').textContent = Math.round(state.scale * 100) + '%' }
-        function zoom(f) { const old = state.scale; state.scale = Math.min(2, Math.max(.35, state.scale * f)); const r = wrap.getBoundingClientRect(); const cx = r.width / 2, cy = r.height / 2; state.panX = cx - (cx - state.panX) * (state.scale / old); state.panY = cy - (cy - state.panY) * (state.scale / old); applyTransform() }
+        function zoom(f) { const old = state.scale; const maxScale = window.innerWidth <= 850 ? 3.2 : 2.5; state.scale = Math.min(maxScale, Math.max(.25, state.scale * f)); const r = wrap.getBoundingClientRect(); const cx = r.width / 2, cy = r.height / 2; state.panX = cx - (cx - state.panX) * (state.scale / old); state.panY = cy - (cy - state.panY) * (state.scale / old); applyTransform() }
         function fit() {
             if (state.pageType === 'content') return;
             if (!state.nodes.length) return;
             const xs = state.nodes.map(n => n.x), ys = state.nodes.map(n => n.y);
             const minx = Math.min(...xs), maxx = Math.max(...xs) + 260, miny = Math.min(...ys), maxy = Math.max(...ys) + 140;
             const r = wrap.getBoundingClientRect(); const sx = (r.width - 80) / (maxx - minx), sy = (r.height - 80) / (maxy - miny);
-            state.scale = Math.min(1.1, Math.max(.35, Math.min(sx, sy))); state.panX = (r.width - (maxx - minx) * state.scale) / 2 - minx * state.scale; state.panY = (r.height - (maxy - miny) * state.scale) / 2 - miny * state.scale; applyTransform()
+            const mobile = window.innerWidth <= 850; const fitCap = mobile ? 1.65 : 1.1; const base = Math.min(sx, sy); state.scale = Math.min(fitCap, Math.max(.45, mobile ? base * 1.28 : base)); state.panX = (r.width - (maxx - minx) * state.scale) / 2 - minx * state.scale; state.panY = (r.height - (maxy - miny) * state.scale) / 2 - miny * state.scale; applyTransform()
         }
         function toast(s) { const t = $('toast'); t.textContent = s; t.classList.add('show'); clearTimeout(window.__toast); window.__toast = setTimeout(() => t.classList.remove('show'), 1800) }
         function openModal(text) { $('jsonArea').value = text; $('modal').classList.add('open') }
@@ -2515,6 +2773,81 @@
             } catch (err) { console.error(err); toast('ساخت PDF داستان ناموفق بود') }
         }
 
+
+        // Simple first-run guided tour. It explains the interface without blocking normal use.
+        const TOUR_KEY = 'creator-os-tour-v1';
+        let tourIndex = 0;
+        let tourSteps = [];
+        function buildTourSteps() {
+            const mobile = window.innerWidth <= 850;
+            const toolsTarget = mobile ? '#mobileMoreBtn' : '#menuBtn';
+            const common = [
+                { target: '.brand', title: '۱. شروع کار', text: 'اینجا نام و نوع صفحه را می‌بینی. Creator OS را مثل یک فضای کاری شخصی برای فکرها، مسیر و محتوا استفاده کن.' },
+                { target: toolsTarget, title: '۲. ابزارها', text: mobile ? 'روی «بیشتر» بزن تا ابزارهای پیشرفته مثل اتصال، خروجی، چیدمان و صفحات را ببینی.' : 'پنل ابزارها برای تنظیمات، صفحات، ساخت نود، چیدمان و خروجی است.' },
+                { target: '#addBtn', title: '۳. ساخت نود', text: 'برای شروع یک نود بساز. عنوان و توضیح را وارد کن و بعد آن را روی نقشه جابه‌جا کن.' },
+                { target: '#canvasWrap', title: '۴. کار روی نقشه', text: 'نودها را بکش و جابه‌جا کن. روی فضای خالی حرکت کن؛ روی نود دوبار بزن تا متنش را مستقیم ویرایش کنی.' },
+                { target: '.zoom', title: '۵. زوم و دید', text: 'با + و − زوم کن. روی موبایل دو انگشت را باز و بسته کن؛ برای دیدن کل نقشه «فیت کردن» را استفاده کن.' },
+                { target: '#pagesBtn', title: '۶. صفحات', text: 'برای Vision و Content Planner صفحه‌های جدا بساز تا هر پروژه ساختار مستقل خودش را داشته باشد.' },
+                { target: '#saveBtn', title: '۷. ذخیره', text: 'Auto-save فعال است؛ این دکمه هم برای ذخیره فوری است.' },
+            ];
+            if (state.pageType === 'content') {
+                return [
+                    ...common.slice(0, 2),
+                    { target: '#pagesBtn', title: '۳. صفحات', text: 'از اینجا بین Vision و Content Planner جابه‌جا شو یا صفحه جدید بساز.' },
+                    { target: '.planner-view', title: '۴. جدول محتوا', text: 'سلول‌ها را مستقیم ویرایش کن. با Tab بین سلول‌ها حرکت کن و با Paste چند سلول را یکجا پر کن.' },
+                    { target: '#plannerView', title: '۵. داستان هر روز', text: 'روی دکمه «داستان روز» هر ستون بزن تا Problem → Pursuit → Payoff را بنویسی و در صورت نیاز همان روز را جداگانه PNG یا PDF بگیری.' },
+                    { target: '#saveBtn', title: '۶. ذخیره', text: 'تغییرات به‌صورت خودکار ذخیره می‌شوند و ذخیره فوری هم در دسترس است.' },
+                    { target: '#pngBtn', title: '۷. خروجی', text: 'کل جدول را به PNG یا PDF خروجی بگیر.' }
+                ].filter(step => document.querySelector(step.target));
+            }
+            return [
+                ...common,
+                { target: '#connectBtn', title: '۸. اتصال نودها', text: 'برای ساخت رابطه، «اتصال نودها» را فعال کن، سپس نود والد و نود مقصد را انتخاب کن.' },
+                { target: '#formatHBtn', title: '۹. چیدمان', text: 'چیدمان افقی یا عمودی را انتخاب کن تا نودها مرتب و خواناتر شوند.' },
+                { target: '#pngBtn', title: '۱۰. خروجی', text: 'از PNG یا PDF برای گرفتن تصویر کامل نقشه استفاده کن؛ خروجی به Zoom صفحه وابسته نیست.' },
+                { target: '#importBtn', title: '۱۱. انتقال داده', text: 'JSON را برای پشتیبان‌گیری یا انتقال پروژه Export و دوباره Import کن.' }
+            ].filter(step => document.querySelector(step.target));
+        }
+        function startTour(force = true) {
+            tourSteps = buildTourSteps(); tourIndex = 0;
+            if (!tourSteps.length) return;
+            $('tourBackdrop').classList.add('open'); $('tourCard').hidden = false; $('tourBackdrop').setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden'; renderTourStep();
+        }
+        function endTour(skip = false) {
+            $('tourBackdrop').classList.remove('open'); $('tourCard').hidden = true; $('tourFocus').style.cssText = 'display:none'; $('tourBackdrop').setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            if (skip) localStorage.setItem(TOUR_KEY, '1');
+        }
+        function renderTourStep() {
+            const step = tourSteps[tourIndex]; if (!step) return endTour(true);
+            const target = document.querySelector(step.target); if (!target) { tourIndex++; return renderTourStep(); }
+            if (window.innerWidth <= 850 && target.closest('.sidebar')) $('sidebar').classList.add('open');
+            target.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+            const r = target.getBoundingClientRect(), focus = $('tourFocus'), card = $('tourCard');
+            const pad = 6; focus.style.display = 'block'; focus.style.left = (r.left - pad) + 'px'; focus.style.top = (r.top - pad) + 'px'; focus.style.width = (r.width + pad * 2) + 'px'; focus.style.height = (r.height + pad * 2) + 'px';
+            $('tourTitle').textContent = step.title; $('tourText').textContent = step.text; $('tourProgress').textContent = `${tourIndex + 1} از ${tourSteps.length}`;
+            $('tourPrev').style.display = tourIndex === 0 ? 'none' : ''; $('tourNext').textContent = tourIndex === tourSteps.length - 1 ? 'تمام' : 'بعدی';
+            const cw = card.offsetWidth || 340, ch = card.offsetHeight || 150, gap = 14;
+            let left = Math.min(Math.max(10, r.left + (r.width - cw) / 2), window.innerWidth - cw - 10);
+            let top = r.bottom + gap;
+            if (top + ch > window.innerHeight - 10) top = Math.max(10, r.top - ch - gap);
+            card.style.left = left + 'px'; card.style.top = top + 'px';
+        }
+        $('tourBtn').onclick = () => startTour(true); $('sidebarTourBtn').onclick = () => { $('sidebar').classList.remove('open'); startTour(true) };
+        $('tourSkip').onclick = () => endTour(true);
+        $('tourPrev').onclick = () => { if (tourIndex > 0) { tourIndex--; renderTourStep() } };
+        $('tourNext').onclick = () => { if (tourIndex < tourSteps.length - 1) { tourIndex++; renderTourStep() } else endTour(true) };
+        $('tourBackdrop').onclick = () => endTour(true);
+        $('mobileMoreBtn').onclick = () => $('sidebar').classList.toggle('open');
+        $('sidebarPngBtn').onclick = () => { downloadPng(); $('sidebar').classList.remove('open') }; $('sidebarPdfBtn').onclick = () => { downloadPdf(); $('sidebar').classList.remove('open') }; $('sidebarFormatHBtn').onclick = () => { formatAllNodes('horizontal'); $('sidebar').classList.remove('open') }; $('sidebarFormatVBtn').onclick = () => { formatAllNodes('vertical'); $('sidebar').classList.remove('open') };
+        window.addEventListener('resize', () => { if (!$('tourCard').hidden) renderTourStep(); });
+        if (!localStorage.getItem(TOUR_KEY)) setTimeout(() => startTour(false), 900);
+
+        const HINT_KEY = 'creator-os-shortcut-hint-dismissed-v1';
+        if (localStorage.getItem(HINT_KEY)) document.body.classList.add('hint-dismissed');
+        $('hintClose').onclick = () => { document.body.classList.add('hint-dismissed'); localStorage.setItem(HINT_KEY, '1'); };
+
         $('addBtn').onclick = () => addNode();
         $('undoBtn').onclick = undo;
         $('redoBtn').onclick = redo;
@@ -2551,12 +2884,45 @@
             wrap.classList.add('panning');
             wrap.setPointerCapture?.(e.pointerId);
         }
+        const activePointers = new Map();
+        let pinchState = null;
+        function pointerDistance(a, b) { return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); }
+        function pointerMid(a, b) { return { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 }; }
+        function beginPinch() {
+            if (activePointers.size < 2) return;
+            const pts = [...activePointers.values()].slice(0, 2), rect = wrap.getBoundingClientRect();
+            const mid = pointerMid(pts[0], pts[1]);
+            pinchState = { distance: Math.max(1, pointerDistance(pts[0], pts[1])), scale: state.scale, worldX: (mid.x - rect.left - state.panX) / state.scale, worldY: (mid.y - rect.top - state.panY) / state.scale };
+            state.dragging = null; panDrag = null; wrap.classList.remove('panning');
+        }
         wrap.addEventListener('pointerdown', e => {
-            if (spaceDown || e.button === 1) {
-                e.preventDefault();
-                beginPan(e);
+            if (e.pointerType === 'touch') {
+                activePointers.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+                if (activePointers.size >= 2) { beginPinch(); e.preventDefault(); }
+                else if (e.target === wrap || e.target === canvas || e.target === world || e.target === nodesEl) { beginPan(e); }
+                return;
             }
-        });
+            if (spaceDown || e.button === 1) { e.preventDefault(); beginPan(e); }
+        }, true);
+        wrap.addEventListener('pointermove', e => {
+            if (e.pointerType !== 'touch' || !activePointers.has(e.pointerId)) return;
+            activePointers.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+            if (activePointers.size >= 2) {
+                if (!pinchState) beginPinch();
+                const pts = [...activePointers.values()].slice(0, 2), rect = wrap.getBoundingClientRect(), mid = pointerMid(pts[0], pts[1]);
+                const ratio = pointerDistance(pts[0], pts[1]) / Math.max(1, pinchState.distance);
+                const next = Math.min(3.2, Math.max(.35, pinchState.scale * ratio));
+                state.scale = next;
+                state.panX = (mid.x - rect.left) - pinchState.worldX * next;
+                state.panY = (mid.y - rect.top) - pinchState.worldY * next;
+                applyTransform(); e.preventDefault();
+            }
+        }, { capture: true, passive: false });
+        function endTouchPointer(e) {
+            activePointers.delete(e.pointerId);
+            if (activePointers.size < 2) pinchState = null;
+        }
+        wrap.addEventListener('pointerup', endTouchPointer, true); wrap.addEventListener('pointercancel', endTouchPointer, true);
         wrap.addEventListener('pointermove', e => {
             if (!panDrag) return;
             state.panX = panDrag.panX + (e.clientX - panDrag.startX);
@@ -2589,7 +2955,7 @@
                 e.preventDefault();
                 const old = state.scale;
                 const factor = Math.exp(-e.deltaY * 0.0025);
-                const next = Math.min(2.5, Math.max(.25, old * factor));
+                const next = Math.min(window.innerWidth <= 850 ? 3.2 : 2.5, Math.max(.25, old * factor));
                 const rect = wrap.getBoundingClientRect();
                 const mx = e.clientX - rect.left, my = e.clientY - rect.top;
                 const worldX = (mx - state.panX) / old, worldY = (my - state.panY) / old;
