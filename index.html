@@ -1,0 +1,2549 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Creator Vision Board</title>
+    <style>
+        :root {
+            --bg: #f6f7fb;
+            --panel: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --line: #cbd5e1;
+            --accent: #6366f1;
+            --shadow: 0 10px 30px rgba(15, 23, 42, .10);
+            --what: #bcd1f2;
+            --who: #d9d3fa;
+            --why: #f8c4c5;
+            --dark: #4b4b4b;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg)
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .topbar {
+            height: 68px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, .94);
+            border-bottom: 1px solid #e5e7eb;
+            backdrop-filter: blur(12px);
+            z-index: 20
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 800
+        }
+
+        .brand h1 {
+            font-size: 15px;
+            margin: 0
+        }
+
+        .brand span {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            border-radius: 10px;
+            padding: 8px 11px;
+            font-size: 12px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            transition: .15s
+        }
+
+        .btn:hover {
+            border-color: #c7d2fe;
+            background: #f8faff
+        }
+
+        .btn.active {
+            background: #eef2ff;
+            border-color: #818cf8;
+            color: #4338ca
+        }
+
+        .btn.primary {
+            background: #6366f1;
+            color: #fff;
+            border-color: #6366f1
+        }
+
+        .btn.danger {
+            color: #b91c1c
+        }
+
+        .main {
+            display: flex;
+            min-height: 0;
+            flex: 1
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #fff;
+            border-left: 1px solid #e5e7eb;
+            padding: 15px;
+            overflow: auto;
+            z-index: 15
+        }
+
+        .sidebar h2 {
+            font-size: 14px;
+            margin: 0 0 8px
+        }
+
+        .sidebar p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin: 0 0 14px
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px
+        }
+
+        .tool {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            padding: 10px;
+            text-align: right
+        }
+
+        .tool strong {
+            display: block;
+            font-size: 12px
+        }
+
+        .tool small {
+            color: var(--muted);
+            font-size: 10px
+        }
+
+        .section {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid #eee
+        }
+
+        .field {
+            margin-bottom: 10px
+        }
+
+        .field label {
+            font-size: 11px;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 5px
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+            padding: 8px 9px;
+            outline: none;
+            background: #fff
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .1)
+        }
+
+        .field textarea {
+            min-height: 75px;
+            resize: vertical
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px
+        }
+
+        .legend div {
+            font-size: 10px;
+            padding: 7px;
+            border-radius: 8px
+        }
+
+        .canvas-wrap {
+            position: relative;
+            cursor: default;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 1px 1px, #dfe3eb 1px, transparent 1px) 0 0/24px 24px,
+                #f8f9fc
+        }
+
+        #canvas {
+            position: absolute;
+            inset: 0;
+            overflow: hidden
+        }
+
+        #world {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2600px;
+            height: 1800px;
+            transform-origin: 0 0
+        }
+
+        #links {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2600px;
+            height: 1800px;
+            overflow: visible;
+            pointer-events: none
+        }
+
+        .link {
+            stroke: #aeb8c7;
+            stroke-width: 2.5;
+            fill: none
+        }
+
+        .link.selected {
+            stroke: #6366f1;
+            stroke-width: 4
+        }
+
+        .canvas-wrap.panning {
+            cursor: grabbing
+        }
+
+        .canvas-wrap.space-ready {
+            cursor: grab
+        }
+
+        .node {
+            position: absolute;
+            min-width: 190px;
+            touch-action: none;
+            max-width: 320px;
+            min-height: 82px;
+            border: 1px solid rgba(15, 23, 42, .10);
+            border-radius: 13px;
+            box-shadow: 0 7px 20px rgba(15, 23, 42, .08);
+            padding: 11px 13px;
+            user-select: none;
+            cursor: grab;
+            transition: box-shadow .12s, outline .12s
+        }
+
+        .node:active {
+            cursor: grabbing
+        }
+
+        .node:hover {
+            box-shadow: 0 10px 28px rgba(15, 23, 42, .13)
+        }
+
+        .node.selected {
+            outline: 3px solid rgba(99, 102, 241, .25);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, .18)
+        }
+
+        .node.connect-source {
+            outline: 3px solid rgba(16, 185, 129, .35)
+        }
+
+        .node .title {
+            font-weight: 850;
+            font-size: 15px;
+            line-height: 1.4
+        }
+
+        .node .sub {
+            font-size: 12px;
+            color: #334155;
+            margin-top: 5px;
+            line-height: 1.5;
+            user-select: text
+        }
+
+        .node .sub p {
+            margin: 0 0 5px
+        }
+
+        .node .sub p:last-child {
+            margin-bottom: 0
+        }
+
+        .node .sub ul,
+        .node .sub ol {
+            margin: 4px 0 5px;
+            padding-right: 17px
+        }
+
+        .node .sub li {
+            margin: 2px 0
+        }
+
+        .node .sub code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            background: rgba(15, 23, 42, .07);
+            padding: 1px 4px;
+            border-radius: 4px
+        }
+
+        .node .sub pre {
+            white-space: pre-wrap;
+            direction: ltr;
+            text-align: left;
+            background: rgba(15, 23, 42, .06);
+            padding: 7px;
+            border-radius: 7px;
+            overflow: auto
+        }
+
+        .node .sub strong {
+            font-weight: 800
+        }
+
+        .node .sub em {
+            font-style: italic
+        }
+
+        .node.dark {
+            background: var(--dark);
+            color: white;
+            border-color: #3f3f46;
+            min-width: 250px;
+            text-align: center
+        }
+
+        .node.dark .sub {
+            color: #f1f5f9
+        }
+
+        .node.what {
+            background: var(--what)
+        }
+
+        .node.who {
+            background: var(--who)
+        }
+
+        .node.why {
+            background: var(--why)
+        }
+
+        .node.blue {
+            background: #c8dafa
+        }
+
+        .node.purple {
+            background: #ddd8fb
+        }
+
+        .node.red {
+            background: #f7c6c7
+        }
+
+        .node.white {
+            background: #fff
+        }
+
+        .inline-editor {
+            font-family: inherit
+        }
+
+        .node .title.inline-editing,
+        .node .sub.inline-editing {
+            cursor: text !important;
+            user-select: text !important
+        }
+
+        .node .handle {
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #94a3b8;
+            opacity: 0
+        }
+
+        .node:hover .handle {
+            opacity: 1
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(31, 41, 55, .88);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            pointer-events: none;
+            opacity: .9;
+            z-index: 5
+        }
+
+        .zoom {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
+            display: flex;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            z-index: 10
+        }
+
+        .zoom button {
+            width: 38px;
+            height: 34px;
+            border: 0;
+            background: #fff
+        }
+
+        .zoom span {
+            min-width: 55px;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            color: #64748b;
+            border-right: 1px solid #eee;
+            border-left: 1px solid #eee
+        }
+
+        .empty {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: #94a3b8;
+            font-size: 13px;
+            pointer-events: none
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #111827;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: .2s;
+            z-index: 50
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: none
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .35);
+            display: none;
+            place-items: center;
+            z-index: 100
+        }
+
+        .modal.open {
+            display: grid
+        }
+
+        .modal-card {
+            width: min(560px, calc(100vw - 30px));
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 25px 70px rgba(15, 23, 42, .2);
+            padding: 18px
+        }
+
+        .modal-card h3 {
+            margin: 0 0 8px;
+            font-size: 15px
+        }
+
+        .modal-card p {
+            font-size: 11px;
+            color: #64748b
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            margin-top: 14px
+        }
+
+        #jsonArea {
+            width: 100%;
+            height: 250px;
+            direction: ltr;
+            font-family: ui-monospace, monospace;
+            font-size: 11px
+        }
+
+        .planner-view {
+            position: absolute;
+            inset: 0;
+            overflow: auto;
+            padding: clamp(16px, 4vw, 48px);
+            display: none;
+            background: radial-gradient(circle at 1px 1px, #dfe3eb 1px, transparent 1px) 0 0/24px 24px, #f8f9fc
+        }
+
+        .planner-shell {
+            width: max(100%, 1120px);
+            max-width: 1240px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #e7ddf7;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(99, 102, 241, .10);
+            padding: 20px
+        }
+
+        .planner-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px
+        }
+
+        .planner-heading {
+            min-width: 0
+        }
+
+        .planner-title {
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 950;
+            letter-spacing: .02em;
+            margin: 0;
+            color: #111827
+        }
+
+        .planner-meta {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 4px
+        }
+
+        .planner-tools {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-start
+        }
+
+        .planner-btn {
+            border: 2px solid #cbd5e1;
+            background: #fff;
+            color: #172033;
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 11px;
+            cursor: pointer
+        }
+
+        .planner-btn:hover {
+            background: #f8faff;
+            border-color: #c7d2fe
+        }
+
+        .planner-scroll {
+            overflow: auto;
+            border: 2px solid #eadcff;
+            border-radius: 14px;
+            background: #fff;
+            -webkit-overflow-scrolling: touch
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: 155px repeat(var(--planner-cols), minmax(145px, 1fr));
+            min-width: max-content;
+            direction: ltr
+        }
+
+        .planner-cell {
+            min-height: 132px;
+            border-left: 1px solid #d8c9ee;
+            border-top: 1px solid #d8c9ee;
+            background: #fff;
+            direction: rtl;
+            position: relative
+        }
+
+        .planner-cell.header {
+            min-height: 104px;
+            background: #eee5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 2
+        }
+
+        .planner-cell.corner {
+            background: #faf8ff
+        }
+
+        .planner-cell.row-label {
+            background: #dceeff;
+            font-weight: 900;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px
+        }
+
+        .planner-input {
+            width: 100%;
+            height: 100%;
+            min-height: inherit;
+            border: 0;
+            outline: 0;
+            resize: none;
+            background: transparent;
+            padding: 11px 12px;
+            font: inherit;
+            line-height: 1.65;
+            color: #1f2937;
+            direction: rtl;
+            text-align: right;
+            overflow: hidden
+        }
+
+        .planner-input.header-input {
+            text-align: center;
+            font-weight: 850;
+            font-size: 14px;
+            min-height: 104px;
+            padding-bottom: 44px;
+            padding: 8px 30px 8px 28px
+        }
+
+        .planner-input.row-input {
+            font-weight: 900;
+            text-align: center;
+            min-height: 132px
+        }
+
+        .planner-input:focus {
+            background: #f8f7ff;
+            box-shadow: inset 0 0 0 3px #4f46e5
+        }
+
+        .planner-cell:hover .planner-cell-menu {
+            opacity: 1
+        }
+
+        .planner-cell-menu {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            display: flex;
+            gap: 3px;
+            opacity: 0;
+            transition: .15s;
+            z-index: 3
+        }
+
+        .planner-mini {
+            border: 1px solid #ddd6fe;
+            background: #fff;
+            color: #64748b;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer
+        }
+
+        .planner-mini:hover {
+            background: #eef2ff;
+            color: #4338ca
+        }
+
+        /* Dedicated export surfaces: export a deterministic render, never the live scrolling DOM. */
+        .export-surface {
+            position: absolute;
+            left: -100000px;
+            top: 0;
+            width: max-content;
+            padding: 0;
+            margin: 0;
+            background: #f8f9fc;
+            direction: rtl;
+            z-index: -1;
+            pointer-events: none
+        }
+
+        .export-sheet {
+            box-sizing: border-box;
+            display: block;
+            width: max-content;
+            background: #fff;
+            color: #172033;
+            border: 1px solid #e7ddf7;
+            border-radius: 18px;
+            padding: 28px;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif
+        }
+
+        .export-sheet-title {
+            font-size: 30px;
+            line-height: 1.25;
+            font-weight: 950;
+            margin: 0 0 6px;
+            color: #111827
+        }
+
+        .export-sheet-meta {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #64748b;
+            margin: 0 0 18px
+        }
+
+        .export-table {
+            display: grid;
+            direction: ltr;
+            width: max-content;
+            border-top: 1px solid #d8c9ee;
+            border-left: 1px solid #d8c9ee;
+            background: #fff
+        }
+
+        .export-table-cell {
+            box-sizing: border-box;
+            min-width: 190px;
+            min-height: 150px;
+            padding: 14px;
+            border-right: 1px solid #d8c9ee;
+            border-bottom: 1px solid #d8c9ee;
+            background: #fff;
+            direction: rtl;
+            text-align: right;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.75
+        }
+
+        .export-table-cell.head {
+            min-height: 108px;
+            background: #eee5ff;
+            font-weight: 900;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .export-table-cell.corner {
+            background: #faf8ff;
+            color: #94a3b8;
+            font-size: 11px
+        }
+
+        .export-table-cell.row-label {
+            background: #dceeff;
+            font-weight: 900;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .story-export-sheet {
+            width: 980px;
+            background: #fff;
+            border: 1px solid #e7ddf7;
+            border-radius: 22px;
+            padding: 30px;
+            box-sizing: border-box
+        }
+
+        .story-export-title {
+            font-size: 30px;
+            font-weight: 950;
+            line-height: 1.25;
+            margin: 0 0 8px
+        }
+
+        .story-export-subtitle {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #64748b;
+            margin-bottom: 20px
+        }
+
+        .story-export-idea {
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 16px;
+            background: #fff;
+            margin-bottom: 14px
+        }
+
+        .story-export-idea .label {
+            font-weight: 900;
+            margin-bottom: 8px
+        }
+
+        .story-export-idea .value {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.8;
+            min-height: 42px
+        }
+
+        .story-export-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px
+        }
+
+        .story-export-card {
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 260px;
+            box-sizing: border-box
+        }
+
+        .story-export-card.problem {
+            background: #fff8f8;
+            border-color: #f0b7b9
+        }
+
+        .story-export-card.pursuit {
+            background: #f8faff;
+            border-color: #b9c7ef
+        }
+
+        .story-export-card.payoff {
+            background: #f7fcf8;
+            border-color: #b8d9c7
+        }
+
+        .story-export-card .label {
+            font-weight: 900;
+            margin-bottom: 8px
+        }
+
+        .story-export-card .value {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.8;
+            min-height: 180px
+        }
+
+        @media(max-width:850px) {
+            .story-export-sheet {
+                width: 760px
+            }
+
+            .story-export-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .planner-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 10px
+        }
+
+        .planner-tip {
+            line-height: 1.7
+        }
+
+        .planner-cell.selected-cell {
+            box-shadow: inset 0 0 0 2px #6366f1
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: 3px solid #2563eb;
+            outline-offset: 2px
+        }
+
+        .btn,
+        .planner-btn,
+        .tool {
+            min-height: 38px
+        }
+
+        .tool strong {
+            font-size: 13px
+        }
+
+        .tool small {
+            font-size: 11px;
+            color: #475569
+        }
+
+        .planner-day-detail {
+            width: min(980px, calc(100vw - 28px));
+            max-height: calc(100vh - 28px);
+            overflow: auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 28px 90px rgba(15, 23, 42, .28);
+            padding: 22px
+        }
+
+        .planner-day-detail h3 {
+            font-size: 22px;
+            margin: 0
+        }
+
+        .planner-day-detail .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-top: 18px
+        }
+
+        .story-card {
+            border: 2px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 14px;
+            background: #fff
+        }
+
+        .story-card.problem {
+            border-color: #f0b7b9;
+            background: #fff8f8
+        }
+
+        .story-card.pursuit {
+            border-color: #b9c7ef;
+            background: #f8faff
+        }
+
+        .story-card.payoff {
+            border-color: #b8d9c7;
+            background: #f7fcf8
+        }
+
+        .story-card label {
+            display: block;
+            font-weight: 900;
+            font-size: 14px;
+            margin-bottom: 7px;
+            color: #172033
+        }
+
+        .story-card small {
+            display: block;
+            color: #475569;
+            font-size: 11px;
+            line-height: 1.7;
+            margin-bottom: 8px
+        }
+
+        .story-card textarea,
+        .day-idea-input {
+            width: 100%;
+            min-height: 125px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px;
+            background: #fff;
+            color: #172033;
+            line-height: 1.75;
+            resize: vertical
+        }
+
+        .day-idea-input {
+            min-height: 80px
+        }
+
+        .story-card textarea:focus,
+        .day-idea-input:focus {
+            border-color: #4f46e5;
+            outline: 3px solid rgba(79, 70, 229, .16)
+        }
+
+        .day-detail-actions {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            margin-top: 16px;
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            padding-top: 10px
+        }
+
+        .day-open-btn {
+            border: 2px solid #94a3b8;
+            background: #fff;
+            color: #172033;
+            border-radius: 8px;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .day-open-btn:hover {
+            background: #eef2ff;
+            border-color: #4f46e5
+        }
+
+        .planner-cell.header .day-open-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            left: 5px
+        }
+
+        @media(min-width:700px) {
+            .planner-day-detail .detail-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(max-width:850px) {
+            .planner-shell {
+                width: max(100%, 900px);
+                padding: 14px;
+                border-radius: 18px
+            }
+
+            .planner-head {
+                align-items: flex-start
+            }
+
+            .planner-tools {
+                max-width: 420px
+            }
+
+            .planner-grid {
+                grid-template-columns: 125px repeat(var(--planner-cols), minmax(140px, 1fr))
+            }
+
+            .planner-cell {
+                min-height: 118px
+            }
+
+            .planner-cell.header {
+                min-height: 96px
+            }
+
+            .planner-input.header-input {
+                min-height: 96px
+            }
+
+            .planner-input.row-input {
+                min-height: 118px
+            }
+        }
+
+        .page-manage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        .page-manage .tool {
+            min-height: 54px
+        }
+
+        body.content-mode #world {
+            display: none
+        }
+
+        body.content-mode #plannerView {
+            display: block
+        }
+
+        body.content-mode #hint {
+            display: none
+        }
+
+        @media(max-width:850px) {
+            .topbar {
+                height: 58px;
+                padding: 8px 10px;
+                gap: 7px;
+                position: relative;
+            }
+
+            .brand {
+                margin: 0 auto 0 0;
+                min-width: 0
+            }
+
+            .brand h1 {
+                font-size: 13px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
+
+            .brand span {
+                display: none
+            }
+
+            .logo {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                font-size: 11px;
+                flex: none
+            }
+
+            .actions {
+                gap: 5px
+            }
+
+            .actions .optional {
+                display: none
+            }
+
+            .btn {
+                min-height: 38px;
+                padding: 8px 9px;
+                font-size: 11px
+            }
+
+            .main {
+                position: relative;
+                min-height: 0
+            }
+
+            .sidebar {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: min(330px, 92vw);
+                transform: translateX(105%);
+                transition: transform .22s ease;
+                box-shadow: -15px 0 40px rgba(0, 0, 0, .16);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                z-index: 30;
+            }
+
+            .sidebar.open {
+                transform: none
+            }
+
+            .menu-btn {
+                display: flex !important
+            }
+
+            .canvas-wrap {
+                touch-action: none
+            }
+
+            .hint {
+                bottom: 58px;
+                max-width: calc(100% - 30px);
+                text-align: center;
+                white-space: normal;
+                font-size: 10px;
+                padding: 7px 10px;
+            }
+
+            .zoom {
+                left: 10px;
+                bottom: 10px
+            }
+        }
+
+        @media(max-width:520px) {
+            .topbar {
+                height: 54px
+            }
+
+            .actions .primary {
+                display: none
+            }
+
+            .logo {
+                width: 32px;
+                height: 32px
+            }
+
+            .brand h1 {
+                font-size: 12px
+            }
+
+            .btn {
+                min-height: 36px
+            }
+
+            .node {
+                min-width: 125px;
+                max-width: 205px;
+                padding: 9px 10px;
+                border-radius: 11px
+            }
+
+            .node .title {
+                font-size: 12px
+            }
+
+            .node .sub {
+                font-size: 9px
+            }
+
+            .sidebar {
+                width: 94vw
+            }
+        }
+
+        @media(min-width:851px) {
+            .menu-btn {
+                display: none !important
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="app">
+        <header class="topbar">
+            <div class="brand">
+                <div class="logo">CV</div>
+                <div>
+                    <h1>Creator Vision Board</h1><span>Personal Brand Canvas</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn menu-btn" id="menuBtn">☰ ابزارها</button>
+                <button class="btn" id="addBtn">＋ نود جدید</button>
+                <button class="btn optional" id="undoBtn">↶ Undo</button><button class="btn optional" id="redoBtn">↷
+                    Redo</button>
+                <button class="btn optional" id="downloadJsonBtn">⬇ JSON</button>
+                <button class="btn optional" id="pngBtn">🖼 PNG</button>
+                <button class="btn optional" id="pdfBtn">📄 PDF</button>
+                <button class="btn optional" id="connectBtn">⌁ اتصال نودها</button>
+                <button class="btn" id="formatHBtn">↔ فرمت افقی</button><button class="btn" id="formatVBtn">↕ فرمت
+                    عمودی</button><button class="btn optional" id="fitBtn">⌗ فیت کردن</button><button class="btn"
+                    id="pagesBtn">▣ صفحات</button>
+                <button class="btn primary" id="saveBtn">ذخیره</button>
+                <button class="btn optional" id="exportBtn">خروجی</button>
+                <button class="btn optional" id="importBtn">ورودی</button>
+            </div>
+        </header>
+        <main class="main">
+            <aside class="sidebar" id="sidebar">
+                <h2>ابزار و تنظیمات</h2>
+                <p>نودها را بکش، متنشان را ویرایش کن و برای ساختار درختی، دو نود را به هم وصل کن.</p>
+                <div class="section" style="margin-top:8px;padding-top:8px">
+                    <h2>صفحه فعال</h2>
+                    <div class="field"><label>صفحه</label><select id="pageSelect"></select></div>
+                    <div class="tool-grid"><button class="tool" id="newPageBtn"><strong>＋ صفحه
+                                جدید</strong><small>Vision Board یا Content Planner</small></button><button class="tool"
+                            id="duplicatePageBtn"><strong>⧉ کپی صفحه</strong><small>یک نسخه از صفحه
+                                فعلی</small></button></div>
+                    <div class="page-manage"><button class="tool" id="renamePageBtn"><strong>✎ تغییر
+                                نام</strong><small>نام صفحه فعال</small></button><button class="tool"
+                            id="deletePageBtn"><strong>⌫ حذف صفحه</strong><small>حذف صفحه فعال</small></button></div>
+                </div>
+
+                <div class="tool-grid">
+                    <button class="tool" data-add="what"><strong>🔵 WHAT</strong><small>Message /
+                            Pillar</small></button>
+                    <button class="tool" data-add="who"><strong>🟣 WHO</strong><small>Avatar / Audience</small></button>
+                    <button class="tool" data-add="why"><strong>🔴 WHY</strong><small>Story / Journey</small></button>
+                    <button class="tool" data-add="white"><strong>⚪ Custom</strong><small>نود آزاد</small></button>
+                </div>
+
+                <div class="section">
+                    <div class="field"><label>عنوان نود انتخاب‌شده</label><input id="titleInput"
+                            placeholder="مثلاً Message"></div>
+                    <div class="field"><label>توضیح</label><textarea id="subInput"
+                            placeholder="توضیح کوتاه..."></textarea></div>
+                    <div class="field"><label>رنگ / نوع</label>
+                        <select id="typeInput">
+                            <option value="white">Custom</option>
+                            <option value="dark">Creator Vision</option>
+                            <option value="what">WHAT / آبی</option>
+                            <option value="who">WHO / بنفش</option>
+                            <option value="why">WHY / صورتی</option>
+                            <option value="blue">Pillar / آبی</option>
+                            <option value="purple">Avatar / بنفش</option>
+                            <option value="red">Story / قرمز</option>
+                        </select>
+                    </div>
+                    <button class="btn danger" id="deleteBtn">حذف نود انتخاب‌شده</button>
+                </div>
+
+                <div class="section">
+                    <h2>راهنما</h2>
+                    <p>برای اتصال: روی «اتصال نودها» بزن، نود والد و سپس نود فرزند را کلیک کن. برای انتخاب/ویرایش کافی
+                        است روی نود کلیک کنی. برای زوم از پایین سمت چپ استفاده کن.</p>
+                    <p><b>Undo:</b> Ctrl/Cmd + Z &nbsp; • &nbsp; <b>Redo:</b> Ctrl/Cmd + Y یا Ctrl/Cmd + Shift + Z</p>
+                    <div class="legend">
+                        <div style="background:#bcd1f2">WHAT / Message</div>
+                        <div style="background:#d9d3fa">WHO / Avatar</div>
+                        <div style="background:#f8c4c5">WHY / Story</div>
+                        <div style="background:#fff;border:1px solid #eee">Custom</div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="canvas-wrap" id="canvasWrap">
+                <div id="canvas">
+                    <div id="world">
+                        <svg id="links" viewBox="0 0 2600 1800" preserveAspectRatio="none"></svg>
+                        <div id="nodes"></div>
+                        <div class="empty" id="empty">برای شروع، نود اضافه کن یا از الگوی آماده استفاده کن.</div>
+                    </div>
+                    <div id="plannerView" class="planner-view"></div>
+                </div>
+                <div class="hint" id="hint">Drag برای جابه‌جایی • Space + Drag برای Pan • Ctrl/Cmd + Wheel برای Zoom •
+                    Double-click روی Title یا Description برای ویرایش مستقیم</div>
+                <div class="zoom"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button
+                        id="zoomIn">＋</button></div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="pageModal">
+        <div class="modal-card">
+            <h3>ساخت صفحه جدید</h3>
+            <p>نوع صفحه را انتخاب کن. هر صفحه داده و ساختار مستقل خودش را دارد.</p>
+            <div class="field"><label>نام صفحه</label><input id="newPageName"
+                    placeholder="مثلاً Content Planner - September"></div>
+            <div class="field"><label>نوع صفحه</label><select id="newPageType">
+                    <option value="vision">Creator Vision / Mind Map</option>
+                    <option value="content">Content Planner</option>
+                </select></div>
+            <div class="modal-actions"><button class="btn primary" id="createPageBtn">ساخت صفحه</button><button
+                    class="btn" id="cancelPageBtn">انصراف</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="dayDetailModal" aria-hidden="true">
+        <div class="planner-day-detail" role="dialog" aria-modal="true" aria-labelledby="dayDetailTitle">
+            <h3 id="dayDetailTitle">داستان محتوای روز</h3>
+            <p style="color:#475569;font-size:12px;line-height:1.8;margin:6px 0 0">برای هر ویدیو ایده و مسیر داستانی را
+                با ساختار ثابت <b>Problem → Pursuit → Payoff</b> مشخص کن.</p>
+            <div class="field" style="margin-top:16px"><label for="dayIdeaInput">ایده / موضوع روز</label><textarea
+                    id="dayIdeaInput" class="day-idea-input"
+                    placeholder="امروز قرار است درباره چه چیزی محتوا بسازی؟"></textarea></div>
+            <div class="detail-grid">
+                <div class="story-card problem"><label for="problemInput">1. Problem | مسئله</label><small>چه اتفاقی
+                        افتاد؟ مشکل، درد، ترس یا چالش چه بود؟ من در چه نقطه‌ای گیر کرده بودم؟</small><textarea
+                        id="problemInput" placeholder="چه مشکلی داشتم؟"></textarea></div>
+                <div class="story-card pursuit"><label for="pursuitInput">2. Pursuit | تلاش / مسیر</label><small>برای
+                        حلش چه کردم؟ چه تصمیمی گرفتم؟ چه چیزهایی امتحان کردم؟ چه چیزی فهمیدم؟</small><textarea
+                        id="pursuitInput" placeholder="برای حلش چه کردم؟"></textarea></div>
+                <div class="story-card payoff"><label for="payoffInput">3. Payoff | نتیجه / کشف</label><small>آخرش چه
+                        اتفاقی افتاد؟ چه چیزی یاد گرفتم؟ مخاطب چه چیزی می‌تواند با خودش ببرد؟</small><textarea
+                        id="payoffInput" placeholder="چه فهمیدم یا چه تغییری کردم؟"></textarea></div>
+            </div>
+            <div class="day-detail-actions">
+                <button class="btn primary" id="saveDayDetailBtn">ذخیره روز</button>
+                <button class="btn optional" id="dayPngBtn">🖼 PNG داستان</button>
+                <button class="btn optional" id="dayPdfBtn">📄 PDF داستان</button>
+                <button class="btn" id="cancelDayDetailBtn">بازگشت به جدول</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-card">
+            <h3 id="modalTitle">خروجی برد</h3>
+            <p>این JSON شامل نودها و اتصال‌هاست و می‌توانی آن را نگه داری یا دوباره وارد کنی.</p>
+            <textarea id="jsonArea"></textarea>
+            <div class="modal-actions"><button class="btn primary" id="modalOk">بستن</button><button class="btn"
+                    id="copyJson">کپی JSON</button></div>
+        </div>
+    </div>
+    <input type="file" id="fileInput" accept=".json,application/json" hidden>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const STORAGE = 'creator-vision-board-v2';
+        const state = {
+            nodes: [], links: [], selected: null, connectMode: false,
+            scale: 1, panX: 0, panY: 0, dragging: null, uniformFormat: false,
+            pages: [], activePageId: null, pageType: 'vision'
+        };
+        const history = { undo: [], redo: [], limit: 80 };
+        let historyRestoring = false;
+        function snapshot() {
+            return JSON.stringify({ nodes: state.nodes, links: state.links, uniformFormat: !!state.uniformFormat, planner: currentPlanner(), pageId: state.activePageId, pageType: state.pageType });
+        }
+        function restoreSnapshot(raw) {
+            const d = JSON.parse(raw);
+            if (d.pageId) state.activePageId = d.pageId;
+            state.nodes = d.nodes || [];
+            state.links = d.links || [];
+            state.uniformFormat = !!d.uniformFormat;
+            const cp = state.pages.find(p => p.id === state.activePageId); if (cp && d.planner) cp.planner = d.planner;
+            state.selected = null;
+            state.pageType = d.pageType || state.pageType || 'vision';
+            state.dragging = null;
+            state.connectMode = false;
+            $('connectBtn')?.classList.remove('primary');
+            render();
+        }
+        function checkpoint() {
+            if (historyRestoring) return;
+            const current = snapshot();
+            if (history.undo.length && history.undo[history.undo.length - 1] === current) return;
+            history.undo.push(current);
+            if (history.undo.length > history.limit) history.undo.shift();
+            history.redo.length = 0;
+        }
+        function undo() {
+            if (!history.undo.length) { toast('چیزی برای Undo وجود ندارد'); return }
+            const current = snapshot();
+            const previous = history.undo.pop();
+            history.redo.push(current);
+            historyRestoring = true;
+            try { restoreSnapshot(previous) } finally { historyRestoring = false }
+            save(false);
+            toast('Undo ✓');
+        }
+        function redo() {
+            if (!history.redo.length) { toast('چیزی برای Redo وجود ندارد'); return }
+            const current = snapshot();
+            const next = history.redo.pop();
+            history.undo.push(current);
+            historyRestoring = true;
+            try { restoreSnapshot(next) } finally { historyRestoring = false }
+            save(false);
+            toast('Redo ✓');
+        }
+        const $ = id => document.getElementById(id);
+        const world = $('world'), nodesEl = $('nodes'), svg = $('links'), wrap = $('canvasWrap');
+
+        function uid(prefix = 'n') { return prefix + Math.random().toString(36).slice(2, 9) }
+        function seed() {
+            const n = (title, sub, type, x, y) => ({ id: uid(), title, sub, type, x, y });
+            const a = n('CREATOR VISION', '', 'dark', 1120, 80);
+            const what = n('WHAT', '', 'what', 450, 300);
+            const msg = n('Message', '', 'blue', 455, 430);
+            const w1 = n('Content Pillar 1', '', 'blue', 230, 590), w2 = n('Content Pillar 2', '', 'blue', 420, 590), w3 = n('Content Pillar 3', '', 'blue', 610, 590), w4 = n('Content Pillar 4', '', 'blue', 800, 590);
+            const who = n('WHO', '', 'who', 1120, 300), av = n('Avatar', '', 'purple', 1120, 430);
+            const demo = n('Demographic', 'Where are they coming from?', 'purple', 920, 590), psycho = n('Psychographic', 'What are they thinking / feeling?', 'purple', 1240, 590);
+            const d2 = n('Age • Location • Gender • Occupation', '', 'purple', 920, 760), p2 = n('Pain • Desire', '', 'purple', 1240, 760);
+            const why = n('WHY', '', 'why', 1790, 300), story = n('Story', '', 'red', 1790, 430);
+            const prob = n('Problem', 'What was the struggle?', 'red', 1590, 590), pur = n('Pursuit', 'How did you overcome the struggle?', 'red', 1790, 590), pay = n('Payoff', 'What was the outcome?', 'red', 1990, 590);
+            state.nodes = [a, what, msg, w1, w2, w3, w4, who, av, demo, psycho, d2, p2, why, story, prob, pur, pay];
+            const link = (from, to) => state.links.push({ id: uid('l'), from, to });
+            link(a.id, what.id); link(a.id, who.id); link(a.id, why.id);
+            link(what.id, msg.id);[w1, w2, w3, w4].forEach(x => link(msg.id, x.id));
+            link(who.id, av.id); link(av.id, demo.id); link(av.id, psycho.id); link(demo.id, d2.id); link(psycho.id, p2.id);
+            link(why.id, story.id); link(story.id, prob.id); link(story.id, pur.id); link(story.id, pay.id);
+        }
+
+        function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])) }
+        function inlineMarkdown(s) {
+            let x = escapeHtml(s);
+            x = x.replace(/`([^`]+)`/g, '<code>$1</code>');
+            x = x.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            x = x.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+            x = x.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+            x = x.replace(/_([^_]+)_/g, '<em>$1</em>');
+            x = x.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+            return x;
+        }
+        function markdownToHtml(md) {
+            const lines = String(md || '').replace(/\r/g, '').split('\n'), out = []; let inUl = false, inOl = false, inCode = false, code = [];
+            const closeLists = () => { if (inUl) { out.push('</ul>'); inUl = false } if (inOl) { out.push('</ol>'); inOl = false } };
+            for (const line of lines) {
+                if (line.trim().startsWith('```')) { if (inCode) { out.push('<pre><code>' + escapeHtml(code.join('\n')) + '</code></pre>'); code = []; inCode = false } else { closeLists(); inCode = true } continue }
+                if (inCode) { code.push(line); continue }
+                let m = line.match(/^\s*[-*+]\s+(.+)$/); if (m) { if (!inUl) { if (inOl) { out.push('</ol>'); inOl = false } out.push('<ul>'); inUl = true } out.push('<li>' + inlineMarkdown(m[1]) + '</li>'); continue }
+                m = line.match(/^\s*\d+[.)]\s+(.+)$/); if (m) { if (!inOl) { if (inUl) { out.push('</ul>'); inUl = false } out.push('<ol>'); inOl = true } out.push('<li>' + inlineMarkdown(m[1]) + '</li>'); continue }
+                closeLists();
+                m = line.match(/^\s*(#{1,3})\s+(.+)$/); if (m) { const level = m[1].length; out.push(`<strong>${inlineMarkdown(m[2])}</strong>`); continue }
+                if (!line.trim()) { out.push('<div style="height:3px"></div>'); continue }
+                out.push('<p>' + inlineMarkdown(line) + '</p>');
+            }
+            closeLists(); if (inCode) out.push('<pre><code>' + escapeHtml(code.join('\n')) + '</code></pre>'); return out.join('');
+        }
+
+        function render() {
+            if (state.pageType === 'content') { nodesEl.innerHTML = ''; svg.innerHTML = ''; $('empty').style.display = 'none'; renderPlanner(); applyTransform(); return }
+            $('plannerView').innerHTML = '';
+            nodesEl.innerHTML = '';
+            $('empty').style.display = state.nodes.length ? 'none' : 'grid';
+            for (const n of state.nodes) {
+                const el = document.createElement('div'); el.className = 'node ' + n.type + (state.uniformFormat ? ' uniform-format ' : '') + (state.selected === n.id ? ' selected' : '') + (state.connectMode && state.dragging?.source === n.id ? ' connect-source' : '');
+                el.dataset.id = n.id; el.style.left = n.x + 'px'; el.style.top = n.y + 'px';
+                el.innerHTML = '<div class="title" title="دوبار کلیک برای ویرایش"></div><div class="sub" title="دوبار کلیک برای ویرایش"></div><span class="handle"></span>';
+                const titleEl = el.querySelector('.title'), subEl = el.querySelector('.sub');
+                titleEl.textContent = n.title;
+                subEl.innerHTML = markdownToHtml(n.sub || '');
+                el.addEventListener('pointerdown', onNodeDown);
+                el.addEventListener('click', onNodeClick);
+                el.addEventListener('dblclick', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const field = e.target.closest('.title') ? 'title' : e.target.closest('.sub') ? 'sub' : null;
+                    if (field) { const node = state.nodes.find(x => x.id === n.id); if (node) startInlineEdit(e, node, field); }
+                });
+                nodesEl.appendChild(el);
+            }
+            drawLinks();
+            updateEditor();
+            applyTransform();
+        }
+        function centerOf(n) {
+            const el = nodesEl.querySelector('[data-id="' + n.id + '"]');
+            const w = el?.offsetWidth || 160, h = el?.offsetHeight || 60;
+            return { x: n.x + w / 2, y: n.y + h / 2, w, h };
+        }
+        function drawLinks() {
+            svg.innerHTML = '';
+            for (const l of state.links) {
+                const a = state.nodes.find(n => n.id === l.from), b = state.nodes.find(n => n.id === l.to); if (!a || !b) continue;
+                const A = centerOf(a), B = centerOf(b);
+                const x1 = A.x, y1 = A.y, x2 = B.x, y2 = B.y;
+                const dx = Math.max(45, Math.abs(x2 - x1) * .42);
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${x1} ${y1} C ${x1 + (x2 > x1 ? dx : -dx)} ${y1}, ${x2 + (x2 > x1 ? -dx : dx)} ${y2}, ${x2} ${y2}`);
+                path.setAttribute('class', 'link');
+                svg.appendChild(path);
+            }
+        }
+        function updateEditor() {
+            const n = state.nodes.find(x => x.id === state.selected);
+            $('titleInput').value = n?.title || ''; $('subInput').value = n?.sub || ''; $('typeInput').value = n?.type || 'white';
+        }
+        function select(id) { if (state.selected === id) return; state.selected = id; render() }
+
+        let sidebarEditCheckpointed = false;
+        let sidebarEditTimer = null;
+        function checkpointSidebarEdit() {
+            if (!sidebarEditCheckpointed) { checkpoint(); sidebarEditCheckpointed = true }
+            clearTimeout(sidebarEditTimer);
+            sidebarEditTimer = setTimeout(() => sidebarEditCheckpointed = false, 500);
+        }
+        function startInlineEdit(e, n, field) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const target = e.target.closest('.title,.sub');
+            if (!target || target.closest('.inline-editing')) return;
+            if (target.isContentEditable) return;
+
+            // Edit directly inside the existing box — no popup and no sidebar.
+            target.classList.add('inline-editing');
+            target.contentEditable = 'true';
+            target.spellcheck = true;
+            target.dir = 'auto';
+            target.style.cursor = 'text';
+            target.style.userSelect = 'text';
+            target.style.outline = 'none';
+            target.style.background = 'rgba(255,255,255,.72)';
+            target.style.borderRadius = '7px';
+            target.style.padding = '4px 6px';
+            target.focus();
+
+            const range = document.createRange();
+            range.selectNodeContents(target);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            const original = n[field] || '';
+            if (field === 'sub') target.textContent = original;
+            checkpoint();
+            let finished = false;
+
+            const finish = (save) => {
+                if (finished) return;
+                finished = true;
+                const value = target.innerText.replace(/\u00a0/g, ' ').trim();
+                if (save) {
+                    n[field] = value;
+                    localStorage.setItem(STORAGE, JSON.stringify({ nodes: state.nodes, links: state.links }));
+                } else {
+                    n[field] = original;
+                }
+                render();
+            };
+
+            target.addEventListener('keydown', ev => {
+                ev.stopPropagation();
+                if (ev.key === 'Escape') {
+                    ev.preventDefault();
+                    finish(false);
+                } else if (ev.key === 'Enter' && (field === 'title' || !ev.shiftKey)) {
+                    ev.preventDefault();
+                    finish(true);
+                }
+            }, { once: false });
+
+            target.addEventListener('blur', () => finish(true), { once: true });
+        }
+
+
+        function onNodeClick(e) {
+            e.stopPropagation();
+            if (e.target.isContentEditable || e.target.closest('.inline-editing')) return;
+            const id = e.currentTarget.dataset.id;
+            if (state.connectMode) {
+                if (!state.dragging?.source) { state.dragging = { source: id }; toast('حالا روی نود مقصد کلیک کن'); render(); return }
+                const from = state.dragging.source;
+                if (from !== id && !state.links.some(l => l.from === from && l.to === id)) {
+                    checkpoint();
+                    state.links.push({ id: uid('l'), from, to: id });
+                }
+                state.dragging = null; state.connectMode = false; $('connectBtn').classList.remove('primary'); toast('اتصال ساخته شد'); render(); return;
+            }
+            select(id);
+        }
+        function onNodeDown(e) {
+            if (state.connectMode) return;
+            if (e.target.closest('.inline-editor') || e.target.closest('.inline-editing') || e.target.isContentEditable) return;
+            e.stopPropagation();
+            const id = e.currentTarget.dataset.id;
+            const n = state.nodes.find(x => x.id === id); if (!n) return;
+            checkpoint();
+            const rect = wrap.getBoundingClientRect();
+            state.dragging = { id, ox: (e.clientX - rect.left - state.panX) / state.scale - n.x, oy: (e.clientY - rect.top - state.panY) / state.scale - n.y };
+            try { e.currentTarget.setPointerCapture(e.pointerId) } catch { }
+        }
+        wrap.addEventListener('pointermove', e => {
+            if (!state.dragging?.id) return;
+            const rect = wrap.getBoundingClientRect();
+            const n = state.nodes.find(x => x.id === state.dragging.id); if (!n) return;
+            n.x = Math.max(10, (e.clientX - rect.left - state.panX) / state.scale - state.dragging.ox);
+            n.y = Math.max(10, (e.clientY - rect.top - state.panY) / state.scale - state.dragging.oy);
+            const el = nodesEl.querySelector('[data-id="' + n.id + '"]'); if (el) { el.style.left = n.x + 'px'; el.style.top = n.y + 'px' }
+            drawLinks();
+        });
+        wrap.addEventListener('pointerup', () => { if (state.dragging?.id) { state.dragging = null; save(false) } });
+        wrap.addEventListener('click', e => { if (e.target === wrap || e.target === $('canvas')) { state.selected = null; render() } });
+        function addNode(type = 'white') {
+            checkpoint();
+            const n = { id: uid(), title: type === 'what' ? 'Content Pillar' : type === 'who' ? 'Avatar' : type === 'why' ? 'Story' : 'New Node', sub: 'برای ویرایش از پنل سمت راست استفاده کن', type, x: 500 + Math.random() * 300, y: 350 + Math.random() * 200 };
+            state.nodes.push(n); state.selected = n.id; render(); $('titleInput').focus(); $('titleInput').select();
+        }
+        function save(show = true) { syncCurrentPage(); localStorage.setItem(STORAGE, JSON.stringify({ version: 3, pages: state.pages, activePageId: state.activePageId })); if (show) toast('ذخیره شد ✓') }
+        function load() { loadStorage(); updatePageUI() }
+        function reset() { if (confirm('برد فعلی پاک و الگوی اولیه جایگزین شود؟')) { checkpoint(); seed(); state.selected = null; save(false); render(); toast('الگو بازنشانی شد') } }
+        function formatAllNodes(direction = 'horizontal') {
+            if (state.pageType === 'content') return toast('فرمتینگ برای Content Planner لازم نیست');
+            if (!state.nodes.length) return toast('هیچ نودی برای مرتب‌سازی وجود ندارد');
+            checkpoint();
+            state.uniformFormat = false;
+
+            const MAIN_GAP = 150, CROSS_GAP = 56, COMPONENT_GAP = 100, MARGIN = 80;
+            const nodeMap = new Map(state.nodes.map(n => [n.id, n]));
+            const out = new Map(), inc = new Map();
+            state.nodes.forEach(n => { out.set(n.id, []); inc.set(n.id, []) });
+            state.links.forEach(l => {
+                if (nodeMap.has(l.from) && nodeMap.has(l.to) && l.from !== l.to) {
+                    out.get(l.from).push(l.to);
+                    inc.get(l.to).push(l.from);
+                }
+            });
+
+            // Measure the real rendered boxes. Formatting never changes their size.
+            const dims = new Map();
+            state.nodes.forEach(n => {
+                const el = nodesEl.querySelector(`[data-id="${n.id}"]`);
+                dims.set(n.id, { w: Math.max(1, el?.offsetWidth || 190), h: Math.max(1, el?.offsetHeight || 72) });
+            });
+
+            // Weakly connected components.
+            const unseen = new Set(state.nodes.map(n => n.id)), components = [];
+            while (unseen.size) {
+                const start = [...unseen][0], q = [start], comp = [];
+                unseen.delete(start);
+                for (let i = 0; i < q.length; i++) {
+                    const id = q[i]; comp.push(id);
+                    for (const x of [...out.get(id), ...inc.get(id)]) {
+                        if (unseen.has(x)) { unseen.delete(x); q.push(x) }
+                    }
+                }
+                components.push(comp);
+            }
+
+            const crossSize = id => direction === 'horizontal' ? dims.get(id).h : dims.get(id).w;
+            const mainSize = id => direction === 'horizontal' ? dims.get(id).w : dims.get(id).h;
+
+            let componentCrossCursor = MARGIN;
+
+            for (const ids of components) {
+                const set = new Set(ids);
+
+                // Build a real tree/forest from the graph. For nodes with multiple parents,
+                // the first reachable parent owns the visual position; extra links stay intact.
+                const roots = ids
+                    .filter(id => inc.get(id).filter(x => set.has(x)).length === 0)
+                    .sort((a, b) => (nodeMap.get(a).y - nodeMap.get(b).y) || (nodeMap.get(a).x - nodeMap.get(b).x));
+
+                const parent = new Map(), children = new Map();
+                ids.forEach(id => children.set(id, []));
+
+                const queue = [];
+                const seedRoots = roots.length ? roots : [ids.slice().sort((a, b) => (nodeMap.get(a).y - nodeMap.get(b).y) || (nodeMap.get(a).x - nodeMap.get(b).x))[0]];
+                for (const r of seedRoots) { parent.set(r, null); queue.push(r) }
+
+                for (let qi = 0; qi < queue.length; qi++) {
+                    const id = queue[qi];
+                    for (const child of out.get(id)) {
+                        if (!set.has(child) || parent.has(child)) continue;
+                        parent.set(child, id);
+                        children.get(id).push(child);
+                        queue.push(child);
+                    }
+                }
+
+                // Cycles / disconnected directed islands: break them into additional roots.
+                const remaining = ids.filter(id => !parent.has(id))
+                    .sort((a, b) => (nodeMap.get(a).y - nodeMap.get(b).y) || (nodeMap.get(a).x - nodeMap.get(b).x));
+                for (const r of remaining) {
+                    parent.set(r, null); queue.push(r);
+                    for (let qi = queue.length - 1; qi < queue.length; qi++) {
+                        const id = queue[qi];
+                        for (const child of out.get(id)) {
+                            if (!set.has(child) || parent.has(child)) continue;
+                            parent.set(child, id);
+                            children.get(id).push(child);
+                            queue.push(child);
+                        }
+                    }
+                }
+
+                // Stable child order follows the current layout, so formatting doesn't randomly reshuffle content.
+                for (const [id, ch] of children) {
+                    ch.sort((a, b) => (nodeMap.get(a).y - nodeMap.get(b).y) || (nodeMap.get(a).x - nodeMap.get(b).x));
+                }
+
+                const rootsAll = ids.filter(id => parent.get(id) === null);
+                const depth = new Map();
+                const dq = [...rootsAll];
+                rootsAll.forEach(r => depth.set(r, 0));
+                for (let i = 0; i < dq.length; i++) {
+                    const id = dq[i], d = depth.get(id);
+                    for (const child of children.get(id) || []) {
+                        depth.set(child, d + 1); dq.push(child);
+                    }
+                }
+
+                // Calculate each subtree's required cross-axis span.
+                const span = new Map();
+                function calcSpan(id) {
+                    const ch = children.get(id) || [];
+                    const own = crossSize(id);
+                    if (!ch.length) { span.set(id, own); return own }
+                    const childTotal = ch.reduce((sum, c) => sum + calcSpan(c), 0) + Math.max(0, ch.length - 1) * CROSS_GAP;
+                    const result = Math.max(own, childTotal);
+                    span.set(id, result);
+                    return result;
+                }
+                rootsAll.forEach(calcSpan);
+
+                // Main-axis columns/rows are uniform by depth, based on real box sizes.
+                const maxDepth = Math.max(0, ...depth.values());
+                const levelSize = [];
+                for (let d = 0; d <= maxDepth; d++) {
+                    const idsAt = [...depth.entries()].filter(([, v]) => v === d).map(([id]) => id);
+                    levelSize[d] = Math.max(...idsAt.map(mainSize));
+                }
+                const mainAt = [];
+                let mainCursor = MARGIN;
+                for (let d = 0; d <= maxDepth; d++) {
+                    mainAt[d] = mainCursor;
+                    mainCursor += levelSize[d] + MAIN_GAP;
+                }
+
+                // Place each tree. Every parent is centered on the complete span of its direct children.
+                function place(id, crossStart) {
+                    const total = span.get(id), ch = children.get(id) || [];
+                    const center = crossStart + total / 2;
+                    const own = crossSize(id);
+                    const main = mainAt[depth.get(id)];
+                    const n = nodeMap.get(id);
+                    if (direction === 'horizontal') {
+                        n.x = main;
+                        n.y = center - own / 2;
+                    } else {
+                        n.x = center - own / 2;
+                        n.y = main;
+                    }
+                    if (ch.length) {
+                        const childTotal = ch.reduce((sum, c) => sum + span.get(c), 0) + (ch.length - 1) * CROSS_GAP;
+                        let cursor = center - childTotal / 2;
+                        for (const child of ch) {
+                            place(child, cursor);
+                            cursor += span.get(child) + CROSS_GAP;
+                        }
+                    }
+                }
+
+                for (const root of rootsAll) {
+                    place(root, componentCrossCursor);
+                    componentCrossCursor += span.get(root) + COMPONENT_GAP;
+                }
+            }
+
+            render();
+            save(false);
+            requestAnimationFrame(() => fit());
+            toast(direction === 'horizontal' ? 'فرمت افقی: فرزندان زیر/کنار والد سنتر شدند ✓' : 'فرمت عمودی: فرزندان زیر/کنار والد سنتر شدند ✓');
+        }
+        function formatDefault() {
+            state.uniformFormat = false;
+            render();
+        }
+        function makePage(name, type) {
+            const page = { id: uid('p'), name: name || ((type === 'content') ? 'Content Planner' : 'Creator Vision'), type, nodes: [], links: [], uniformFormat: false, planner: null };
+            if (type === 'content') {
+                page.planner = {
+                    days: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+                    rows: ['IDEA', 'FORMAT', 'INTENSITY'],
+                    cells: Array.from({ length: 3 }, () => Array(7).fill(''))
+                };
+            } else {
+                const n = (title, sub, type, x, y) => page.nodes.push({ id: uid(), title, sub, type, x, y });
+                n('CREATOR VISION', '', 'dark', 900, 60); n('WHAT', 'Message / Pillars', 'what', 400, 260); n('WHO', 'Audience / Avatar', 'who', 900, 260); n('WHY', 'Story / Purpose', 'why', 1400, 260);
+                page.links = [{ id: uid('l'), from: page.nodes[0].id, to: page.nodes[1].id }, { id: uid('l'), from: page.nodes[0].id, to: page.nodes[2].id }, { id: uid('l'), from: page.nodes[0].id, to: page.nodes[3].id }];
+            }
+            return page;
+        }
+        function currentPlanner() {
+            const p = state.pages.find(x => x.id === state.activePageId);
+            return p?.planner || null;
+        }
+        function ensurePlanner(p) {
+            if (!p.planner || typeof p.planner !== 'object') {
+                p.planner = { days: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'], rows: ['IDEA', 'FORMAT', 'INTENSITY'], cells: Array.from({ length: 3 }, () => Array(7).fill('')), dayDetails: Array.from({ length: 7 }, () => ({ idea: '', problem: '', pursuit: '', payoff: '' })) };
+            }
+            if (!Array.isArray(p.planner.days) || !p.planner.days.length) p.planner.days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+            if (!Array.isArray(p.planner.rows) || !p.planner.rows.length) p.planner.rows = ['IDEA', 'FORMAT', 'INTENSITY'];
+            const cols = p.planner.days.length, rows = p.planner.rows.length;
+            if (!Array.isArray(p.planner.cells)) p.planner.cells = [];
+            p.planner.cells.length = rows;
+            for (let r = 0; r < rows; r++) {
+                if (!Array.isArray(p.planner.cells[r])) p.planner.cells[r] = [];
+                p.planner.cells[r].length = cols;
+                for (let c = 0; c < cols; c++)p.planner.cells[r][c] = String(p.planner.cells[r][c] ?? '');
+                p.planner.rows[r] = String(p.planner.rows[r] ?? '');
+            }
+            p.planner.days = p.planner.days.map((d, i) => String(d ?? (i === 5 ? 'SAT' : i === 6 ? 'SUN' : '')));
+            if (!Array.isArray(p.planner.dayDetails)) p.planner.dayDetails = [];
+            p.planner.dayDetails.length = cols;
+            for (let i = 0; i < cols; i++) { if (!p.planner.dayDetails[i] || typeof p.planner.dayDetails[i] !== 'object') p.planner.dayDetails[i] = {}; const d = p.planner.dayDetails[i]; d.idea = String(d.idea ?? ''); d.problem = String(d.problem ?? ''); d.pursuit = String(d.pursuit ?? ''); d.payoff = String(d.payoff ?? ''); }
+            return p.planner;
+        }
+        function plannerFocusCell(r, c) {
+            const el = document.querySelector(`.planner-input[data-r="${r}"][data-c="${c}"][data-kind="cell"]`);
+            if (el) { el.focus(); el.select?.() }
+        }
+        function plannerMoveFocus(r, c, dr, dc) {
+            const p = state.pages.find(x => x.id === state.activePageId), data = p && ensurePlanner(p);
+            if (!data) return;
+            const nr = Math.max(0, Math.min(data.rows.length - 1, r + dr)), nc = Math.max(0, Math.min(data.days.length - 1, c + dc));
+            plannerFocusCell(nr, nc);
+        }
+        function plannerAddRow() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            checkpoint(); const d = ensurePlanner(p), i = d.rows.length + 1;
+            d.rows.push('ROW ' + i); d.cells.push(Array(d.days.length).fill(''));
+            syncCurrentPage(); save(false); renderPlanner(); toast('ردیف جدید اضافه شد ✓');
+        }
+        function plannerRemoveRow() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const d = ensurePlanner(p); if (d.rows.length <= 1) return toast('حداقل یک ردیف باید باقی بماند');
+            checkpoint(); d.rows.pop(); d.cells.pop(); syncCurrentPage(); save(false); renderPlanner(); toast('آخرین ردیف حذف شد ✓');
+        }
+        function plannerAddColumn() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            checkpoint(); const d = ensurePlanner(p), i = d.days.length + 1;
+            d.days.push('DAY ' + i); d.cells.forEach(row => row.push('')); d.dayDetails.push({ idea: '', problem: '', pursuit: '', payoff: '' });
+            syncCurrentPage(); save(false); renderPlanner(); toast('ستون جدید اضافه شد ✓');
+        }
+        function plannerRemoveColumn() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const d = ensurePlanner(p); if (d.days.length <= 1) return toast('حداقل یک ستون باید باقی بماند');
+            checkpoint(); d.days.pop(); d.cells.forEach(row => row.pop()); d.dayDetails.pop(); syncCurrentPage(); save(false); renderPlanner(); toast('آخرین ستون حذف شد ✓');
+        }
+        function plannerReset() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            if (!confirm('محتوای جدول پاک شود؟ ساختار روزها و ردیف‌ها حفظ می‌شود.')) return;
+            checkpoint(); const d = ensurePlanner(p); d.cells = d.rows.map(() => Array(d.days.length).fill('')); syncCurrentPage(); save(false); renderPlanner(); toast('محتوای جدول پاک شد ✓');
+        }
+        function plannerAutoResize(el) {
+            if (!el) return; el.style.height = 'auto'; el.style.height = Math.max(el.scrollHeight, el.classList.contains('header-input') ? 62 : 42) + 'px';
+        }
+        function plannerInputCommit(el) {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const d = ensurePlanner(p), r = +el.dataset.r, c = +el.dataset.c, kind = el.dataset.kind;
+            if (kind === 'cell') d.cells[r][c] = el.value;
+            else if (kind === 'row') d.rows[r] = el.value;
+            else if (kind === 'day') d.days[c] = el.value;
+            syncCurrentPage(); save(false); plannerAutoResize(el);
+        }
+        let activePlannerDay = -1;
+        function openDayDetail(c) {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (c < 0 || c >= d.days.length) return;
+            activePlannerDay = c; const detail = d.dayDetails[c];
+            $('dayDetailTitle').textContent = `${d.days[c]} — Story Planner`;
+            $('dayIdeaInput').value = detail.idea || d.cells[0]?.[c] || '';
+            $('problemInput').value = detail.problem || ''; $('pursuitInput').value = detail.pursuit || ''; $('payoffInput').value = detail.payoff || '';
+            $('dayDetailModal').classList.add('open'); $('dayDetailModal').setAttribute('aria-hidden', 'false');
+            setTimeout(() => $('dayIdeaInput').focus(), 30);
+        }
+        function closeDayDetail() { activePlannerDay = -1; $('dayDetailModal').classList.remove('open'); $('dayDetailModal').setAttribute('aria-hidden', 'true') }
+        function saveDayDetail() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p || activePlannerDay < 0) return; const d = ensurePlanner(p); checkpoint();
+            d.dayDetails[activePlannerDay] = { idea: $('dayIdeaInput').value, problem: $('problemInput').value, pursuit: $('pursuitInput').value, payoff: $('payoffInput').value };
+            if (d.rows[0] === 'IDEA') d.cells[0][activePlannerDay] = $('dayIdeaInput').value;
+            syncCurrentPage(); save(false); closeDayDetail(); renderPlanner(); toast('داستان روز ذخیره شد ✓');
+        }
+
+        function renderPlanner() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const data = ensurePlanner(p), root = $('plannerView'); if (!root) return;
+            const cols = data.days.length, rows = data.rows.length;
+            let html = '<div class="planner-shell">';
+            html += '<div class="planner-head"><div class="planner-heading"><div class="planner-title">' + escapeHtml(p.name || 'CONTENT PLANNER') + '</div><div class="planner-meta">' + rows + ' ردیف · ' + cols + ' ستون · ویرایش مستقیم، Tab برای سلول بعدی، Paste چندسلولی با TSV</div></div>';
+            html += '<div class="planner-tools"><button class="planner-btn" data-planner-action="add-row">＋ ردیف</button><button class="planner-btn" data-planner-action="remove-row">− ردیف</button><button class="planner-btn" data-planner-action="add-col">＋ ستون</button><button class="planner-btn" data-planner-action="remove-col">− ستون</button><button class="planner-btn" data-planner-action="reset">پاک‌کردن محتوا</button></div></div>';
+            html += '<div class="planner-scroll"><div class="planner-grid" style="--planner-cols:' + cols + '">';
+            html += '<div class="planner-cell header corner"><span style="font-size:10px;color:#94a3b8">LABELS</span></div>';
+            data.days.forEach((d, c) => { html += '<div class="planner-cell header"><div class="planner-cell-menu"><button class="planner-mini" title="حذف این ستون" aria-label="حذف ستون ' + escapeHtml(d) + '" data-remove-col="' + c + '">×</button></div><textarea aria-label="نام روز ' + escapeHtml(d) + '" class="planner-input header-input" data-kind="day" data-r="0" data-c="' + c + '" spellcheck="false">' + escapeHtml(d) + '</textarea><button class="day-open-btn" type="button" data-open-day="' + c + '">✎ داستان روز</button></div>' });
+            data.rows.forEach((row, r) => {
+                html += '<div class="planner-cell row-label"><div class="planner-cell-menu"><button class="planner-mini" title="حذف این ردیف" data-remove-row="' + r + '">×</button></div><textarea class="planner-input row-input" data-kind="row" data-r="' + r + '" data-c="0" spellcheck="false">' + escapeHtml(row) + '</textarea></div>';
+                for (let c = 0; c < cols; c++)html += '<div class="planner-cell"><textarea class="planner-input" data-kind="cell" data-r="' + r + '" data-c="' + c + '" spellcheck="true" placeholder="Add content...">' + escapeHtml(data.cells[r][c] || '') + '</textarea></div>';
+            });
+            html += '</div></div><div class="planner-footer"><div class="planner-tip">Space، Enter و متن چندخطی کاملاً پشتیبانی می‌شود. با Paste کردن متن Tab-separated می‌توانی چند سلول را یکجا پر کنی.</div><div>Auto-save ✓</div></div></div>';
+            root.innerHTML = html;
+
+            root.querySelectorAll('.planner-input').forEach(el => {
+                plannerAutoResize(el);
+                el.addEventListener('focus', () => {
+                    el.dataset.before = el.value;
+                    el.closest('.planner-cell')?.classList.add('selected-cell');
+                    checkpoint();
+                });
+                el.addEventListener('blur', () => {
+                    el.closest('.planner-cell')?.classList.remove('selected-cell');
+                    const before = el.dataset.before ?? '', after = el.value;
+                    if (before !== after) toast('ذخیره شد ✓');
+                });
+                el.addEventListener('input', () => plannerInputCommit(el));
+                el.addEventListener('keydown', e => {
+                    const r = +el.dataset.r, c = +el.dataset.c, kind = el.dataset.kind;
+                    if (e.key === 'Tab' && kind === 'cell') {
+                        e.preventDefault();
+                        plannerMoveFocus(r, c, 0, e.shiftKey ? -1 : 1);
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        el.value = el.dataset.before ?? el.value; plannerInputCommit(el); el.blur();
+                    } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                        e.preventDefault(); el.blur();
+                    }
+                });
+                el.addEventListener('paste', e => {
+                    const text = e.clipboardData?.getData('text/plain') || '';
+                    if (!text.includes('\t') && !text.includes('\\n')) return;
+                    e.preventDefault();
+                    const lines = text.replace(/\r/g, '').split('\n').filter((line, i, a) => !(i === a.length - 1 && !line));
+                    const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+                    const d = ensurePlanner(p), r = +el.dataset.r, c = +el.dataset.c;
+                    checkpoint();
+                    lines.forEach((line, ri) => {
+                        line.split('\t').forEach((value, ci) => {
+                            const rr = r + ri, cc = c + ci;
+                            if (rr < d.rows.length && cc < d.days.length) d.cells[rr][cc] = value;
+                        });
+                    });
+                    syncCurrentPage(); save(false); renderPlanner();
+                    requestAnimationFrame(() => plannerFocusCell(r, c));
+                    toast('چند سلول با هم وارد شد ✓');
+                });
+            });
+            root.querySelectorAll('[data-open-day]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); openDayDetail(+btn.dataset.openDay) }));
+            root.querySelectorAll('[data-planner-action]').forEach(btn => btn.addEventListener('click', () => {
+                const a = btn.dataset.plannerAction;
+                if (a === 'add-row') plannerAddRow(); if (a === 'remove-row') plannerRemoveRow(); if (a === 'add-col') plannerAddColumn(); if (a === 'remove-col') plannerRemoveColumn(); if (a === 'reset') plannerReset();
+            }));
+            root.querySelectorAll('[data-remove-row]').forEach(btn => btn.addEventListener('click', e => {
+                e.stopPropagation(); const idx = +btn.dataset.removeRow, p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (d.rows.length <= 1) return toast('حداقل یک ردیف باید باقی بماند'); checkpoint(); d.rows.splice(idx, 1); d.cells.splice(idx, 1); syncCurrentPage(); save(false); renderPlanner();
+            }));
+            root.querySelectorAll('[data-remove-col]').forEach(btn => btn.addEventListener('click', e => {
+                e.stopPropagation(); const idx = +btn.dataset.removeCol, p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (d.days.length <= 1) return toast('حداقل یک ستون باید باقی بماند'); checkpoint(); d.days.splice(idx, 1); d.cells.forEach(row => row.splice(idx, 1)); d.dayDetails.splice(idx, 1); syncCurrentPage(); save(false); renderPlanner();
+            }));
+        }
+        function refreshModeUI() {
+            const content = state.pageType === 'content';
+            document.body.classList.toggle('content-mode', content);
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                const p = state.pages.find(x => x.id === state.activePageId);
+                const desc = sidebar.querySelector('p');
+                if (desc) desc.textContent = content ? 'Content Planner: سلول‌ها، روزها و ردیف‌ها را مستقیم ویرایش کن. برای متن چندخطی از Enter و برای حرکت بین سلول‌ها از Tab استفاده کن.' : 'نودها را بکش، متنشان را ویرایش کن و برای ساختار درختی، دو نود را به هم وصل کن.';
+            }
+            ['addBtn', 'connectBtn', 'formatHBtn', 'formatVBtn', 'fitBtn', 'deleteBtn'].forEach(id => { const el = $(id); if (el) el.style.display = content ? 'none' : '' });
+            document.querySelectorAll('[data-add]').forEach(el => { el.style.display = content ? 'none' : '' });
+        }
+        function syncCurrentPage() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            p.nodes = state.nodes; p.links = state.links; p.uniformFormat = !!state.uniformFormat; p.type = state.pageType; if (p.type === 'content') p.planner = ensurePlanner(p);
+        }
+        function loadPage(id) {
+            syncCurrentPage(); const p = state.pages.find(x => x.id === id); if (!p) return; state.activePageId = p.id; state.pageType = p.type; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = !!p.uniformFormat; state.selected = null; state.panX = 0; state.panY = 0; render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast(`صفحه «${p.name}» فعال شد`)
+        }
+        function updatePageUI() {
+            const sel = $('pageSelect'); if (!sel) return; sel.innerHTML = state.pages.map(p => `<option value="${p.id}">${escapeHtml(p.name)} — ${p.type === 'content' ? 'Content Planner' : 'Vision Board'}</option>`).join(''); sel.value = state.activePageId || '';
+            const p = state.pages.find(x => x.id === state.activePageId); document.querySelector('.brand h1').textContent = p?.name || 'Creator Vision Board'; document.querySelector('.brand span').textContent = p?.type === 'content' ? 'Content Planner' : 'Personal Brand Canvas'; refreshModeUI();
+        }
+        function renamePage() {
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const name = prompt('نام جدید صفحه:', p.name || ''); if (name === null) return;
+            const clean = name.trim(); if (!clean) return toast('نام صفحه نمی‌تواند خالی باشد');
+            checkpoint(); p.name = clean; syncCurrentPage(); save(false); updatePageUI(); render(); toast('نام صفحه تغییر کرد ✓');
+        }
+        function deletePage() {
+            if (state.pages.length <= 1) return toast('حداقل یک صفحه باید باقی بماند');
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            if (!confirm(`صفحه «${p.name}» حذف شود؟`)) return;
+            checkpoint(); const idx = state.pages.findIndex(x => x.id === p.id); state.pages.splice(idx, 1);
+            const next = state.pages[Math.max(0, idx - 1)] || state.pages[0];
+            state.activePageId = next.id; state.pageType = next.type; state.nodes = next.nodes || []; state.links = next.links || []; state.uniformFormat = !!next.uniformFormat; state.selected = null;
+            render(); save(false); updatePageUI(); refreshModeUI(); if (state.pageType !== 'content') requestAnimationFrame(() => fit()); toast('صفحه حذف شد ✓');
+        }
+        function openPageModal() { $('newPageName').value = ''; $('newPageType').value = 'vision'; $('pageModal').classList.add('open'); setTimeout(() => $('newPageName').focus(), 50) }
+        function createPage() { checkpoint(); const name = $('newPageName').value.trim() || ($('newPageType').value === 'content' ? 'Content Planner' : 'Creator Vision'); const p = makePage(name, $('newPageType').value); syncCurrentPage(); state.pages.push(p); state.activePageId = p.id; state.pageType = p.type; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = false; state.selected = null; $('pageModal').classList.remove('open'); render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast('صفحه جدید ساخته شد ✓') }
+        function duplicatePage() { checkpoint(); syncCurrentPage(); const p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const copy = JSON.parse(JSON.stringify(p)); copy.id = uid('p'); copy.name = p.name + ' — Copy'; copy.nodes.forEach(n => n.id = uid()); const idMap = new Map(p.nodes.map((n, i) => [n.id, copy.nodes[i].id])); copy.links = copy.links.map(l => ({ ...l, id: uid('l'), from: idMap.get(l.from) || l.from, to: idMap.get(l.to) || l.to })); state.pages.push(copy); state.activePageId = copy.id; state.pageType = copy.type; state.nodes = copy.nodes; state.links = copy.links; state.uniformFormat = copy.uniformFormat; render(); save(false); updatePageUI(); refreshModeUI(); toast('صفحه کپی شد ✓') }
+        function loadStorage() {
+            try {
+                const d = JSON.parse(localStorage.getItem(STORAGE));
+                if (d?.pages?.length) { state.pages = d.pages; state.activePageId = d.activePageId || d.pages[0].id; const p = state.pages.find(x => x.id === state.activePageId) || state.pages[0]; state.activePageId = p.id; state.pageType = p.type; state.nodes = p.nodes || []; state.links = p.links || []; state.uniformFormat = !!p.uniformFormat; if (p.type === 'content') ensurePlanner(p); return }
+                const legacy = JSON.parse(localStorage.getItem('creator-vision-board-v1'));
+                if (legacy?.nodes) { state.pages = [{ id: uid('p'), name: 'Creator Vision', type: 'vision', nodes: legacy.nodes, links: legacy.links || [], uniformFormat: !!legacy.uniformFormat }]; state.activePageId = state.pages[0].id; state.pageType = 'vision'; state.nodes = state.pages[0].nodes; state.links = state.pages[0].links; state.uniformFormat = !!state.pages[0].uniformFormat; return }
+            } catch { }
+            const p = makePage('Creator Vision', 'vision'); // replace with the richer original seed below
+            seed(); p.nodes = state.nodes; p.links = state.links; state.pages = [{ id: uid('p'), name: 'Creator Vision', type: 'vision', nodes: p.nodes, links: p.links, uniformFormat: false }]; state.activePageId = state.pages[0].id; state.pageType = 'vision'; state.nodes = p.nodes; state.links = p.links;
+        }
+        function deleteSelected() {
+            const id = state.selected; if (!id) return toast('اول یک نود را انتخاب کن');
+            checkpoint();
+            state.nodes = state.nodes.filter(n => n.id !== id); state.links = state.links.filter(l => l.from !== id && l.to !== id); state.selected = null; save(false); render();
+        }
+        function toggleConnect() { state.connectMode = !state.connectMode; state.dragging = null; $('connectBtn').classList.toggle('primary', state.connectMode); toast(state.connectMode ? 'نود مبدأ و سپس مقصد را کلیک کن' : 'حالت اتصال خاموش شد') }
+        function applyTransform() { world.style.transform = `translate(${state.panX}px,${state.panY}px) scale(${state.scale})`; $('zoomLabel').textContent = Math.round(state.scale * 100) + '%' }
+        function zoom(f) { const old = state.scale; state.scale = Math.min(2, Math.max(.35, state.scale * f)); const r = wrap.getBoundingClientRect(); const cx = r.width / 2, cy = r.height / 2; state.panX = cx - (cx - state.panX) * (state.scale / old); state.panY = cy - (cy - state.panY) * (state.scale / old); applyTransform() }
+        function fit() {
+            if (state.pageType === 'content') return;
+            if (!state.nodes.length) return;
+            const xs = state.nodes.map(n => n.x), ys = state.nodes.map(n => n.y);
+            const minx = Math.min(...xs), maxx = Math.max(...xs) + 260, miny = Math.min(...ys), maxy = Math.max(...ys) + 140;
+            const r = wrap.getBoundingClientRect(); const sx = (r.width - 80) / (maxx - minx), sy = (r.height - 80) / (maxy - miny);
+            state.scale = Math.min(1.1, Math.max(.35, Math.min(sx, sy))); state.panX = (r.width - (maxx - minx) * state.scale) / 2 - minx * state.scale; state.panY = (r.height - (maxy - miny) * state.scale) / 2 - miny * state.scale; applyTransform()
+        }
+        function toast(s) { const t = $('toast'); t.textContent = s; t.classList.add('show'); clearTimeout(window.__toast); window.__toast = setTimeout(() => t.classList.remove('show'), 1800) }
+        function openModal(text) { $('jsonArea').value = text; $('modal').classList.add('open') }
+        function boardData() { syncCurrentPage(); return { version: 3, exportedAt: new Date().toISOString(), pages: state.pages, activePageId: state.activePageId } }
+        function exportJson() { openModal(JSON.stringify(boardData(), null, 2)) }
+        function downloadBlob(blob, name) {
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+            document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        }
+        function downloadJson() {
+            const blob = new Blob([JSON.stringify(boardData(), null, 2)], { type: 'application/json;charset=utf-8' });
+            downloadBlob(blob, 'creator-vision-board.json'); toast('فایل JSON دانلود شد ✓');
+        }
+        function getExportBounds() {
+            if (!state.nodes.length) return { x: 0, y: 0, w: 800, h: 600 };
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            state.nodes.forEach(n => {
+                const el = nodesEl.querySelector('[data-id="' + n.id + '"]');
+                const w = el?.getBoundingClientRect?.().width || el?.offsetWidth || 190;
+                const h = el?.getBoundingClientRect?.().height || el?.offsetHeight || 82;
+                minX = Math.min(minX, Number(n.x) || 0);
+                minY = Math.min(minY, Number(n.y) || 0);
+                maxX = Math.max(maxX, (Number(n.x) || 0) + w);
+                maxY = Math.max(maxY, (Number(n.y) || 0) + h);
+            });
+            // Never cap the board to the live 2600×1800 world. Large maps must export in full.
+            const pad = 90;
+            const x = Math.floor(minX - pad);
+            const y = Math.floor(minY - pad);
+            const w = Math.ceil(Math.max(400, maxX - minX + pad * 2));
+            const h = Math.ceil(Math.max(300, maxY - minY + pad * 2));
+            return { x, y, w, h };
+        }
+
+        function buildVisionExportHost() {
+            if (state.pageType === 'content') return null;
+            const bounds = getExportBounds();
+            const host = makeExportHost();
+            const sheet = document.createElement('div');
+            sheet.className = 'export-vision-sheet';
+            sheet.style.width = bounds.w + 'px';
+            sheet.style.height = bounds.h + 'px';
+            sheet.style.overflow = 'hidden';
+            sheet.style.position = 'relative';
+            sheet.style.background = '#f8f9fc';
+            sheet.style.direction = 'ltr';
+
+            // Clone only the visual layers. This avoids the live viewport, zoom, pan,
+            // clipping and the fixed 2600×1800 world from affecting the export.
+            const layer = document.createElement('div');
+            layer.className = 'export-vision-layer';
+            layer.style.position = 'absolute';
+            layer.style.left = (-bounds.x) + 'px';
+            layer.style.top = (-bounds.y) + 'px';
+            layer.style.width = Math.max(2600, bounds.x + bounds.w + 120) + 'px';
+            layer.style.height = Math.max(1800, bounds.y + bounds.h + 120) + 'px';
+            layer.style.overflow = 'visible';
+
+            const linksClone = svg.cloneNode(true);
+            linksClone.removeAttribute('id');
+            linksClone.style.position = 'absolute';
+            linksClone.style.left = '0';
+            linksClone.style.top = '0';
+            linksClone.style.width = Math.max(2600, bounds.x + bounds.w + 120) + 'px';
+            linksClone.style.height = Math.max(1800, bounds.y + bounds.h + 120) + 'px';
+            linksClone.setAttribute('viewBox', `0 0 ${Math.max(2600, bounds.x + bounds.w + 120)} ${Math.max(1800, bounds.y + bounds.h + 120)}`);
+
+            const nodesClone = nodesEl.cloneNode(true);
+            nodesClone.removeAttribute('id');
+            nodesClone.style.position = 'absolute';
+            nodesClone.style.left = '0';
+            nodesClone.style.top = '0';
+            nodesClone.style.width = '1px';
+            nodesClone.style.height = '1px';
+            nodesClone.style.overflow = 'visible';
+
+            layer.appendChild(linksClone);
+            layer.appendChild(nodesClone);
+            sheet.appendChild(layer);
+            host.appendChild(sheet);
+            return { host, sheet, bounds };
+        }
+        function makeExportHost() {
+            const host = document.createElement('div');
+            host.className = 'export-surface';
+            document.body.appendChild(host);
+            return host;
+        }
+
+        function textForExport(value, fallback = '—') {
+            const v = String(value ?? '').trim();
+            return v || fallback;
+        }
+
+        function safeExportName(value, fallback) {
+            const cleaned = String(value || '').replace(/[^\w\-\u0600-\u06FF ]+/g, '').trim();
+            return cleaned || fallback;
+        }
+
+        function buildPlannerExportHost() {
+            const p = state.pages.find(x => x.id === state.activePageId);
+            if (!p || p.type !== 'content') return null;
+            const d = ensurePlanner(p);
+            const host = makeExportHost();
+            const sheet = document.createElement('div');
+            sheet.className = 'export-sheet';
+
+            const title = document.createElement('div');
+            title.className = 'export-sheet-title';
+            title.textContent = p.name || 'CONTENT PLANNER';
+            sheet.appendChild(title);
+
+            const meta = document.createElement('div');
+            meta.className = 'export-sheet-meta';
+            meta.textContent = `${d.rows.length} ردیف · ${d.days.length} ستون · خروجی کامل Content Planner`;
+            sheet.appendChild(meta);
+
+            const table = document.createElement('div');
+            table.className = 'export-table';
+            table.style.gridTemplateColumns = `180px repeat(${d.days.length}, 210px)`;
+            table.style.gridTemplateRows = `108px repeat(${d.rows.length}, 150px)`;
+
+            const addCell = (value, cls = '') => {
+                const cell = document.createElement('div');
+                cell.className = `export-table-cell ${cls}`.trim();
+                cell.textContent = textForExport(value);
+                table.appendChild(cell);
+            };
+
+            addCell('LABELS', 'head corner');
+            d.days.forEach(day => addCell(day, 'head'));
+            d.rows.forEach((row, r) => {
+                addCell(row, 'row-label');
+                for (let c = 0; c < d.days.length; c++) addCell(d.cells?.[r]?.[c] || '');
+            });
+            sheet.appendChild(table);
+            host.appendChild(sheet);
+            return { host, sheet };
+        }
+
+        function buildStoryExportHost(dayIndex) {
+            const p = state.pages.find(x => x.id === state.activePageId);
+            if (!p || p.type !== 'content') return null;
+            const d = ensurePlanner(p);
+            if (dayIndex < 0 || dayIndex >= d.days.length) return null;
+            const stored = d.dayDetails?.[dayIndex] || { idea: '', problem: '', pursuit: '', payoff: '' };
+            const live = activePlannerDay === dayIndex && $('dayDetailModal')?.classList.contains('open');
+            const detail = live ? {
+                idea: $('dayIdeaInput')?.value || '',
+                problem: $('problemInput')?.value || '',
+                pursuit: $('pursuitInput')?.value || '',
+                payoff: $('payoffInput')?.value || ''
+            } : stored;
+            const host = makeExportHost();
+            const sheet = document.createElement('div');
+            sheet.className = 'story-export-sheet';
+
+            const title = document.createElement('div');
+            title.className = 'story-export-title';
+            title.textContent = `${d.days[dayIndex] || `DAY ${dayIndex + 1}`} — Story Planner`;
+            sheet.appendChild(title);
+
+            const subtitle = document.createElement('div');
+            subtitle.className = 'story-export-subtitle';
+            subtitle.textContent = `${p.name || 'Content Planner'} · Problem → Pursuit → Payoff`;
+            sheet.appendChild(subtitle);
+
+            const idea = document.createElement('div');
+            idea.className = 'story-export-idea';
+            const ideaLabel = document.createElement('div');
+            ideaLabel.className = 'label'; ideaLabel.textContent = 'ایده / موضوع روز';
+            const ideaValue = document.createElement('div');
+            ideaValue.className = 'value'; ideaValue.textContent = textForExport(detail.idea || d.cells?.[0]?.[dayIndex]);
+            idea.append(ideaLabel, ideaValue); sheet.appendChild(idea);
+
+            const grid = document.createElement('div'); grid.className = 'story-export-grid';
+            [['problem', '1. Problem | مسئله', detail.problem], ['pursuit', '2. Pursuit | تلاش / مسیر', detail.pursuit], ['payoff', '3. Payoff | نتیجه / کشف', detail.payoff]].forEach(([kind, label, value]) => {
+                const card = document.createElement('div'); card.className = `story-export-card ${kind}`;
+                const l = document.createElement('div'); l.className = 'label'; l.textContent = label;
+                const v = document.createElement('div'); v.className = 'value'; v.textContent = textForExport(value);
+                card.append(l, v); grid.appendChild(card);
+            });
+            sheet.appendChild(grid); host.appendChild(sheet);
+            return { host, sheet, filenameBase: safeExportName(`story-${d.days[dayIndex] || `day-${dayIndex + 1}`}`, `story-day-${dayIndex + 1}`) };
+        }
+
+        async function canvasFromElement(element, options = {}) {
+            if (!window.html2canvas) { toast('کتابخانه خروجی هنوز بارگذاری نشده؛ دوباره تلاش کن'); return null }
+            if (document.fonts?.ready) { try { await document.fonts.ready } catch { } }
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+            const width = Math.ceil(element.scrollWidth || element.offsetWidth || 1);
+            const height = Math.ceil(element.scrollHeight || element.offsetHeight || 1);
+            // Keep very large mind maps within browser canvas limits while preserving
+            // the complete board. Normal exports still render at 2×.
+            const maxDimension = options.maxDimension || 14000;
+            const maxPixels = options.maxPixels || 120000000;
+            const requestedScale = options.scale || 2;
+            const safeScale = Math.max(.75, Math.min(requestedScale, maxDimension / width, maxDimension / height, Math.sqrt(maxPixels / Math.max(1, width * height))));
+            return html2canvas(element, {
+                backgroundColor: options.backgroundColor || '#f8f9fc', scale: safeScale, useCORS: true, logging: false,
+                width, height,
+                scrollX: 0, scrollY: 0,
+                windowWidth: Math.max(document.documentElement.clientWidth, width),
+                windowHeight: Math.max(document.documentElement.clientHeight, height)
+            });
+        }
+
+        async function renderExportCanvas() {
+            if (!window.html2canvas) { toast('کتابخانه خروجی هنوز بارگذاری نشده؛ دوباره تلاش کن'); return null }
+            if (state.pageType === 'content') {
+                const built = buildPlannerExportHost();
+                if (!built) { toast('جدول Content Planner پیدا نشد'); return null }
+                try { return await canvasFromElement(built.sheet); }
+                finally { built.host.remove(); }
+            }
+
+            const built = buildVisionExportHost();
+            if (!built) { toast('برد Creator Vision پیدا نشد'); return null }
+            try {
+                return await canvasFromElement(built.sheet, { maxDimension: 14000, maxPixels: 120000000 });
+            } finally {
+                built.host.remove();
+            }
+        }
+
+        async function renderStoryExportCanvas(dayIndex) {
+            const built = buildStoryExportHost(dayIndex);
+            if (!built) { toast('داستان این روز پیدا نشد'); return null }
+            try { return await canvasFromElement(built.sheet); }
+            finally { built.host.remove(); }
+        }
+
+        function pdfFromCanvas(canvas, filename, orientation = null) {
+            if (!window.jspdf) { toast('کتابخانه PDF هنوز بارگذاری نشده؛ دوباره تلاش کن'); return false }
+            const { jsPDF } = window.jspdf;
+            const landscape = orientation ? orientation === 'landscape' : canvas.width >= canvas.height;
+            const pdf = new jsPDF({ orientation: landscape ? 'landscape' : 'portrait', unit: 'pt', format: 'a4', compress: true });
+            const pageW = pdf.internal.pageSize.getWidth(), pageH = pdf.internal.pageSize.getHeight();
+            const margin = 24, maxW = pageW - margin * 2, maxH = pageH - margin * 2;
+            const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+            const w = canvas.width * ratio, h = canvas.height * ratio;
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', (pageW - w) / 2, (pageH - h) / 2, w, h, undefined, 'FAST');
+            pdf.save(filename); return true;
+        }
+
+        async function downloadPng() {
+            try {
+                toast('در حال ساخت PNG…'); const canvas = await renderExportCanvas(); if (!canvas) return;
+                canvas.toBlob(blob => {
+                    if (!blob) return toast('ساخت PNG ناموفق بود');
+                    downloadBlob(blob, state.pageType === 'content' ? 'content-planner.png' : 'creator-vision-board.png');
+                    toast('PNG با موفقیت ساخته شد ✓');
+                }, 'image/png');
+            } catch (err) { console.error(err); toast('ساخت PNG ناموفق بود') }
+        }
+
+        async function downloadPdf() {
+            try {
+                toast('در حال ساخت PDF…'); const canvas = await renderExportCanvas(); if (!canvas) return;
+                if (pdfFromCanvas(canvas, state.pageType === 'content' ? 'content-planner.pdf' : 'creator-vision-board.pdf')) toast('PDF با موفقیت ساخته شد ✓');
+            } catch (err) { console.error(err); toast('ساخت PDF ناموفق بود') }
+        }
+
+        async function downloadDayStoryPng() {
+            if (activePlannerDay < 0) return toast('ابتدا یک روز را باز کن');
+            try {
+                toast('در حال ساخت PNG داستان…'); const canvas = await renderStoryExportCanvas(activePlannerDay); if (!canvas) return;
+                const p = state.pages.find(x => x.id === state.activePageId), d = p ? ensurePlanner(p) : null;
+                const name = safeExportName(`story-${d?.days?.[activePlannerDay] || `day-${activePlannerDay + 1}`}`, `story-day-${activePlannerDay + 1}`);
+                canvas.toBlob(blob => { if (!blob) return toast('ساخت PNG داستان ناموفق بود'); downloadBlob(blob, `${name}.png`); toast('PNG داستان روز ساخته شد ✓') }, 'image/png');
+            } catch (err) { console.error(err); toast('ساخت PNG داستان ناموفق بود') }
+        }
+
+        async function downloadDayStoryPdf() {
+            if (activePlannerDay < 0) return toast('ابتدا یک روز را باز کن');
+            try {
+                toast('در حال ساخت PDF داستان…'); const canvas = await renderStoryExportCanvas(activePlannerDay); if (!canvas) return;
+                const p = state.pages.find(x => x.id === state.activePageId), d = p ? ensurePlanner(p) : null;
+                const name = safeExportName(`story-${d?.days?.[activePlannerDay] || `day-${activePlannerDay + 1}`}`, `story-day-${activePlannerDay + 1}`);
+                if (pdfFromCanvas(canvas, `${name}.pdf`, 'portrait')) toast('PDF داستان روز ساخته شد ✓');
+            } catch (err) { console.error(err); toast('ساخت PDF داستان ناموفق بود') }
+        }
+
+        $('addBtn').onclick = () => addNode();
+        $('undoBtn').onclick = undo;
+        $('redoBtn').onclick = redo;
+        document.querySelectorAll('[data-add]').forEach(b => b.onclick = () => {
+            addNode(b.dataset.add);
+            if (window.innerWidth <= 850) $('sidebar').classList.remove('open');
+        });
+        $('connectBtn').onclick = toggleConnect; $('saveBtn').onclick = () => save(); $('fitBtn').onclick = fit; $('formatHBtn').onclick = () => formatAllNodes('horizontal'); $('formatVBtn').onclick = () => formatAllNodes('vertical'); $('pagesBtn').onclick = () => { if (window.innerWidth <= 850) $('sidebar').classList.add('open'); else openPageModal() }; $('newPageBtn').onclick = openPageModal; $('duplicatePageBtn').onclick = duplicatePage; $('renamePageBtn').onclick = renamePage; $('deletePageBtn').onclick = deletePage; $('pageSelect').onchange = e => loadPage(e.target.value); $('createPageBtn').onclick = createPage; $('cancelPageBtn').onclick = () => $('pageModal').classList.remove('open'); $('pageModal').onclick = e => { if (e.target === $('pageModal')) $('pageModal').classList.remove('open') };
+        $('deleteBtn').onclick = deleteSelected; $('zoomIn').onclick = () => zoom(1.15); $('zoomOut').onclick = () => zoom(.87);
+        $('exportBtn').onclick = exportJson;
+        $('downloadJsonBtn').onclick = downloadJson;
+        $('pngBtn').onclick = downloadPng;
+        $('pdfBtn').onclick = downloadPdf;
+        $('dayPngBtn').onclick = downloadDayStoryPng;
+        $('dayPdfBtn').onclick = downloadDayStoryPdf;
+        $('importBtn').onclick = () => $('fileInput').click();
+        $('fileInput').onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const d = JSON.parse(r.result); if (Array.isArray(d.pages)) { state.pages = d.pages; state.activePageId = d.activePageId || d.pages[0].id; const p = state.pages.find(x => x.id === state.activePageId) || state.pages[0]; state.activePageId = p.id; state.pageType = p.type || 'vision'; state.nodes = p.nodes || []; state.links = p.links || []; state.uniformFormat = !!p.uniformFormat } else if (Array.isArray(d.nodes)) { state.pages = [{ id: uid('p'), name: 'Imported Vision', type: 'vision', nodes: d.nodes, links: d.links || [], uniformFormat: !!d.uniformFormat }]; state.activePageId = state.pages[0].id; state.pageType = 'vision'; state.nodes = d.nodes; state.links = d.links || []; state.uniformFormat = !!d.uniformFormat } else throw 0; save(false); render(); updatePageUI(); toast('ورودی وارد شد ✓') } catch { toast('فایل JSON معتبر نیست') } }; r.readAsText(f) };
+        $('copyJson').onclick = async () => { try { await navigator.clipboard.writeText($('jsonArea').value); toast('JSON کپی شد') } catch { toast('کپی خودکار در دسترس نیست') } };
+        $('saveDayDetailBtn').onclick = saveDayDetail; $('cancelDayDetailBtn').onclick = closeDayDetail; $('dayDetailModal').onclick = e => { if (e.target === $('dayDetailModal')) closeDayDetail() };
+        $('modalOk').onclick = () => $('modal').classList.remove('open');
+        $('modal').onclick = e => { if (e.target === $('modal')) $('modal').classList.remove('open') };
+        $('titleInput').oninput = e => { const n = state.nodes.find(x => x.id === state.selected); if (n) { checkpointSidebarEdit(); n.title = e.target.value; render() } }
+        $('subInput').oninput = e => { const n = state.nodes.find(x => x.id === state.selected); if (n) { checkpointSidebarEdit(); n.sub = e.target.value; render() } }
+        $('typeInput').onchange = e => { const n = state.nodes.find(x => x.id === state.selected); if (n) { checkpoint(); n.type = e.target.value; render() } }
+        $('menuBtn').onclick = () => $('sidebar').classList.toggle('open');
+
+        let spaceDown = false;
+        let panDrag = null;
+
+        function beginPan(e) {
+            if (e.button !== 0 && e.button !== 1) return;
+            const rect = wrap.getBoundingClientRect();
+            panDrag = { startX: e.clientX, startY: e.clientY, panX: state.panX, panY: state.panY };
+            wrap.classList.add('panning');
+            wrap.setPointerCapture?.(e.pointerId);
+        }
+        wrap.addEventListener('pointerdown', e => {
+            if (spaceDown || e.button === 1) {
+                e.preventDefault();
+                beginPan(e);
+            }
+        });
+        wrap.addEventListener('pointermove', e => {
+            if (!panDrag) return;
+            state.panX = panDrag.panX + (e.clientX - panDrag.startX);
+            state.panY = panDrag.panY + (e.clientY - panDrag.startY);
+            applyTransform();
+        });
+        wrap.addEventListener('pointerup', e => {
+            if (panDrag) {
+                panDrag = null; wrap.classList.remove('panning');
+                try { wrap.releasePointerCapture?.(e.pointerId) } catch { }
+            }
+        });
+        wrap.addEventListener('pointercancel', () => { panDrag = null; wrap.classList.remove('panning') });
+
+        document.addEventListener('keydown', e => {
+            const active = document.activeElement;
+            const textEditing = active?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(active?.tagName);
+            if (e.code === 'Space' && !textEditing) {
+                e.preventDefault(); spaceDown = true; wrap.classList.add('space-ready');
+            }
+        });
+        document.addEventListener('keyup', e => {
+            if (e.code === 'Space') { spaceDown = false; wrap.classList.remove('space-ready'); }
+        });
+        window.addEventListener('blur', () => { spaceDown = false; panDrag = null; wrap.classList.remove('space-ready', 'panning') });
+
+        wrap.addEventListener('wheel', e => {
+            // Ctrl/Cmd + mouse wheel = scale/zoom around the cursor.
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                const old = state.scale;
+                const factor = Math.exp(-e.deltaY * 0.0025);
+                const next = Math.min(2.5, Math.max(.25, old * factor));
+                const rect = wrap.getBoundingClientRect();
+                const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+                const worldX = (mx - state.panX) / old, worldY = (my - state.panY) / old;
+                state.scale = next;
+                state.panX = mx - worldX * next;
+                state.panY = my - worldY * next;
+                applyTransform();
+            }
+        }, { passive: false });
+
+        document.addEventListener('keydown', e => {
+            const mod = e.ctrlKey || e.metaKey;
+            if (!mod) return;
+            const key = e.key.toLowerCase();
+            if (key === 'z') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (e.shiftKey) redo(); else undo();
+                return;
+            }
+            if (key === 'y') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                redo();
+                return;
+            }
+            if (key === 's') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                save();
+            }
+        }, true);
+
+        document.addEventListener('keydown', e => {
+            const tag = document.activeElement?.tagName;
+            const textEditing = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable;
+            if (e.key === 'Delete' && !textEditing) deleteSelected();
+            if (e.key === 'Escape') {
+                state.connectMode = false; state.dragging = null;
+                $('connectBtn').classList.remove('primary');
+                $('sidebar').classList.remove('open');
+                render()
+            }
+        });
+        load(); updatePageUI(); refreshModeUI(); render(); setTimeout(() => { if (state.pageType !== 'content') fit() }, 80);
+    </script>
+</body>
+
+</html>
