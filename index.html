@@ -994,6 +994,441 @@
             min-height: 180px
         }
 
+
+        /* Home / workspace chooser */
+        .home-view {
+            display: none;
+            flex: 1;
+            overflow: auto;
+            padding: clamp(24px, 5vw, 64px);
+            background:
+                radial-gradient(circle at 15% 10%, rgba(99, 102, 241, .10), transparent 28%),
+                radial-gradient(circle at 85% 20%, rgba(139, 92, 246, .10), transparent 30%),
+                #f8f9fc;
+        }
+
+        body.home-mode .home-view {
+            display: block;
+        }
+
+        body.home-mode .topbar,
+        body.home-mode .main {
+            display: none;
+        }
+
+        .home-shell {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+        }
+
+        .home-hero {
+            text-align: center;
+            padding: 18px 0 28px;
+        }
+
+        .home-logo {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 14px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 950;
+            font-size: 18px;
+            box-shadow: 0 14px 30px rgba(99, 102, 241, .22);
+        }
+
+        .home-hero h2 {
+            margin: 0;
+            font-size: clamp(28px, 5vw, 42px);
+            color: #111827;
+        }
+
+        .home-hero p {
+            margin: 10px auto 0;
+            max-width: 680px;
+            color: #64748b;
+            line-height: 1.9;
+            font-size: 13px;
+        }
+
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .workspace-card {
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            border-radius: 22px;
+            padding: 22px;
+            text-align: right;
+            box-shadow: var(--shadow);
+            transition: .18s;
+            cursor: pointer;
+        }
+
+        .workspace-card:hover {
+            transform: translateY(-2px);
+            border-color: #c7d2fe;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, .12);
+        }
+
+        .workspace-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            margin-bottom: 13px;
+        }
+
+        .workspace-card.vision .workspace-icon {
+            background: #eef2ff;
+            color: #4338ca;
+        }
+
+        .workspace-card.planner .workspace-icon {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .workspace-card h3 {
+            margin: 0 0 7px;
+            font-size: 17px;
+        }
+
+        .workspace-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.8;
+            min-height: 45px;
+        }
+
+        .workspace-card .home-cta {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 0;
+            border-radius: 10px;
+            padding: 9px 12px;
+            background: #6366f1;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .home-projects {
+            margin-top: 30px;
+        }
+
+        .home-projects-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .home-projects h3 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .project-item {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        .project-item:hover {
+            border-color: #c7d2fe;
+            background: #fbfcff;
+        }
+
+        .project-item strong {
+            display: block;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .project-item small {
+            color: #64748b;
+            font-size: 10px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .home-new {
+            border: 1px dashed #c7d2fe;
+            background: #fff;
+            color: #4338ca;
+            border-radius: 13px;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        @media(max-width:700px) {
+
+            .workspace-grid,
+            .project-list {
+                grid-template-columns: 1fr;
+            }
+
+            .home-view {
+                padding: 20px 14px 36px;
+            }
+        }
+
+        /* Planner: semantic day-based workspace */
+        .planner-view {
+            padding: clamp(12px, 3vw, 32px);
+        }
+
+        .planner-shell {
+            width: min(1180px, 100%);
+            max-width: none;
+        }
+
+        .planner-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .planner-view-switch {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .planner-btn.active-view {
+            background: #eef2ff;
+            border-color: #818cf8;
+            color: #4338ca;
+        }
+
+        .planner-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(145px, 1fr));
+            gap: 10px;
+        }
+
+        .planner-day-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+        }
+
+        .planner-day-head {
+            padding: 12px 12px 9px;
+            background: #f5f3ff;
+            border-bottom: 1px solid #e9e7ff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .planner-day-head strong {
+            font-size: 13px;
+        }
+
+        .planner-day-head small {
+            color: #64748b;
+            font-size: 10px;
+        }
+
+        .planner-field {
+            padding: 10px 11px 0;
+        }
+
+        .planner-field:last-child {
+            padding-bottom: 11px;
+        }
+
+        .planner-field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 900;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .planner-field textarea,
+        .planner-field select {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+            padding: 8px;
+            background: #fff;
+            line-height: 1.6;
+            font: inherit;
+            font-size: 11px;
+        }
+
+        .planner-field textarea {
+            min-height: 72px;
+            resize: vertical;
+        }
+
+        .planner-field textarea:focus,
+        .planner-field select:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, .10);
+        }
+
+        .story-mini {
+            margin: 10px 11px 11px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fafafa;
+            padding: 9px;
+            font-size: 10px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .story-mini strong {
+            display: block;
+            color: #172033;
+            margin-bottom: 3px;
+        }
+
+        .story-mini button {
+            margin-top: 7px;
+            border: 1px solid #c7d2fe;
+            background: #fff;
+            color: #4338ca;
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .planner-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(120px, 1fr));
+            gap: 8px;
+        }
+
+        .calendar-cell {
+            min-height: 170px;
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+            background: #fff;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .calendar-cell:hover {
+            border-color: #c7d2fe;
+            background: #fbfcff;
+        }
+
+        .calendar-cell h4 {
+            margin: 0 0 9px;
+            font-size: 12px;
+        }
+
+        .calendar-chip {
+            padding: 7px 8px;
+            border-radius: 8px;
+            background: #f8faff;
+            margin-top: 6px;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .calendar-chip b {
+            display: block;
+            font-size: 9px;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+
+        .day-focus {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .day-focus-nav {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .day-focus-nav .planner-btn {
+            flex: 0 0 auto;
+        }
+
+        .day-focus-title {
+            font-size: 20px;
+            font-weight: 950;
+        }
+
+        .day-focus-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, .06);
+        }
+
+        .day-focus-story {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .day-focus-story .story-mini {
+            margin: 0;
+            min-height: 130px;
+        }
+
+        @media(max-width:850px) {
+            .planner-days-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .planner-calendar {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .day-focus-story {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media(max-width:850px) {
             .story-export-sheet {
                 width: 760px
@@ -1216,11 +1651,27 @@
         }
 
         body.content-mode #world {
-            display: none
+            display: none;
+        }
+
+        body.content-mode .canvas-wrap {
+            display: none !important;
+        }
+
+        body.content-mode .main {
+            position: relative;
+            display: block;
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
         }
 
         body.content-mode #plannerView {
-            display: block
+            display: block;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
         }
 
         body.content-mode #hint {
@@ -1561,9 +2012,1253 @@
                 border-radius: 12px
             }
         }
+
+        /* Production-ready writing workspace layer */
+        :root {
+            --surface: #ffffff;
+            --surface-soft: #fbfbfd;
+            --ink: #111827;
+            --ink-soft: #475569;
+            --line-soft: #e7e9ef;
+            --line-focus: #818cf8;
+            --writing-bg: #fcfcfe;
+            --writing-shadow: 0 18px 55px rgba(15, 23, 42, .07);
+        }
+
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .app,
+        .main,
+        .content,
+        .planner-view,
+        .planner-shell,
+        .planner-day-card,
+        .day-focus-card {
+            min-width: 0;
+        }
+
+        .nav-back {
+            font-weight: 800;
+        }
+
+        .nav-back:hover {
+            transform: translateX(1px);
+        }
+
+        .planner-view {
+            overflow-x: hidden;
+            overflow-y: auto;
+            background:
+                radial-gradient(circle at 12% 0%, rgba(99, 102, 241, .07), transparent 28%),
+                linear-gradient(180deg, #f8f9fc 0%, #f5f6fa 100%);
+        }
+
+        .planner-shell {
+            width: min(1180px, 100%);
+            padding: clamp(14px, 2.4vw, 28px);
+            border: 1px solid #e8e9ef;
+            border-radius: 24px;
+            box-shadow: var(--writing-shadow);
+            background: rgba(255, 255, 255, .96);
+        }
+
+        .planner-toolbar {
+            align-items: flex-end;
+        }
+
+        .planner-title {
+            letter-spacing: -.02em;
+        }
+
+        .planner-meta {
+            color: #64748b;
+        }
+
+        .planner-view-switch {
+            background: #f5f6fa;
+            border: 1px solid #e8e9ef;
+            border-radius: 12px;
+            padding: 3px;
+        }
+
+        .planner-view-switch .planner-btn {
+            border: 0;
+            background: transparent;
+        }
+
+        .planner-view-switch .planner-btn.active-view {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, .08);
+        }
+
+        .planner-days-grid {
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .planner-day-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            background: var(--surface);
+            overflow: hidden;
+            box-shadow: 0 6px 22px rgba(15, 23, 42, .045);
+            transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+        }
+
+        .planner-day-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
+            border-color: #d9dcf0;
+        }
+
+        .planner-day-head {
+            background: #fff;
+            padding: 14px 14px 12px;
+            border-bottom: 1px solid #eef0f4;
+        }
+
+        .planner-day-head strong {
+            color: #111827;
+            font-size: 13px;
+            letter-spacing: .03em;
+        }
+
+        .planner-day-head small {
+            color: #94a3b8;
+        }
+
+        .planner-day-head .planner-mini {
+            background: #f8f8fc;
+        }
+
+        .planner-field {
+            padding: 13px 13px 0;
+        }
+
+        .planner-field label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 9px;
+            letter-spacing: .10em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 7px;
+        }
+
+        .planner-field label::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #a5b4fc;
+        }
+
+        .planner-field textarea,
+        .planner-field select {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: var(--writing-bg);
+            color: #1f2937;
+            padding: 11px 12px;
+            font-size: 11px;
+            line-height: 1.8;
+            transition: border-color .15s, box-shadow .15s, background .15s;
+        }
+
+        .planner-field textarea {
+            min-height: 104px;
+            resize: vertical;
+            background: linear-gradient(#fff, #fcfcfe);
+        }
+
+        .planner-field textarea::placeholder {
+            color: #b0b8c7;
+        }
+
+        .planner-field textarea:hover,
+        .planner-field select:hover {
+            border-color: #d5d9e5;
+        }
+
+        .planner-field textarea:focus,
+        .planner-field select:focus {
+            border-color: var(--line-focus);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, .09);
+        }
+
+        .story-mini.story-frame {
+            margin: 14px 13px 13px;
+            padding: 13px;
+            border: 1px solid #e6e8ef;
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .story-frame-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .story-frame-head strong {
+            font-size: 9px;
+            letter-spacing: .12em;
+            color: #64748b;
+        }
+
+        .story-frame-head span {
+            font-size: 9px;
+            color: #a1a8b5;
+            white-space: nowrap;
+        }
+
+        .story-preview {
+            border: 1px solid #edf0f4;
+            border-radius: 11px;
+            padding: 10px;
+            background: #fbfbfd;
+        }
+
+        .story-preview span {
+            display: block;
+            font-size: 9px;
+            font-weight: 900;
+            color: #6366f1;
+            margin-bottom: 4px;
+        }
+
+        .story-preview p {
+            margin: 0;
+            font-size: 10px;
+            line-height: 1.75;
+            color: #475569;
+            min-height: 34px;
+        }
+
+        .story-edit-btn {
+            width: 100%;
+            margin-top: 9px;
+            padding: 8px 10px;
+            border: 1px solid #dfe3ef;
+            border-radius: 9px;
+            background: #fff;
+            color: #4338ca;
+            font-size: 10px;
+            font-weight: 850;
+            cursor: pointer;
+        }
+
+        .story-edit-btn:hover {
+            background: #f7f7ff;
+            border-color: #c7d2fe;
+        }
+
+        .planner-calendar {
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .calendar-cell {
+            min-width: 0;
+            min-height: 190px;
+            border-radius: 16px;
+            padding: 13px;
+        }
+
+        .calendar-chip {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .day-focus {
+            max-width: 820px;
+        }
+
+        .day-focus-card {
+            padding: clamp(14px, 3vw, 24px);
+        }
+
+        .day-focus-story {
+            gap: 12px;
+        }
+
+        .story-writing-block {
+            min-width: 0;
+            min-height: 150px;
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: #fcfcfe;
+        }
+
+        .story-writing-block span {
+            display: block;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: .08em;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .story-writing-block p {
+            margin: 0;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.85;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .story-writing-block.problem {
+            background: #fffdfd;
+        }
+
+        .story-writing-block.pursuit {
+            background: #fcfdff;
+        }
+
+        .story-writing-block.payoff {
+            background: #fcfffd;
+        }
+
+        #dayDetailModal .modal-card {
+            width: min(760px, calc(100vw - 28px));
+            max-height: calc(100vh - 28px);
+            overflow: auto;
+            border-radius: 22px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, .20);
+        }
+
+        #dayDetailModal textarea {
+            background: #fcfcfe !important;
+            border-color: #e5e7eb !important;
+            border-radius: 13px !important;
+            line-height: 1.9 !important;
+        }
+
+        #dayDetailModal textarea:focus {
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, .09) !important;
+            outline: 0 !important;
+        }
+
+        /* Content Planner: focused writing workspace — no permanent sidebar */
+        body.content-mode .sidebar {
+            display: none !important;
+        }
+
+        body.content-mode .main {
+            position: relative;
+            display: block;
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        body.content-mode .canvas-wrap {
+            display: none !important;
+        }
+
+        body.content-mode #plannerView {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body.content-mode .topbar .menu-btn,
+        body.content-mode .topbar .mobile-quick,
+        body.content-mode .topbar #addBtn,
+        body.content-mode .topbar #undoBtn,
+        body.content-mode .topbar #redoBtn,
+        body.content-mode .topbar #downloadJsonBtn,
+        body.content-mode .topbar #pngBtn,
+        body.content-mode .topbar #pdfBtn,
+        body.content-mode .topbar #connectBtn,
+        body.content-mode .topbar #formatHBtn,
+        body.content-mode .topbar #formatVBtn,
+        body.content-mode .topbar #fitBtn,
+        body.content-mode .topbar #pagesBtn,
+        body.content-mode .topbar #exportBtn,
+        body.content-mode .topbar #importBtn,
+        body.content-mode .topbar #tourBtn {
+            display: none !important;
+        }
+
+        body.content-mode .topbar {
+            justify-content: space-between;
+        }
+
+        body.content-mode .topbar .actions {
+            margin-right: auto;
+        }
+
+        body.content-mode .topbar #saveBtn {
+            display: flex !important;
+        }
+
+        .planner-workspace-head {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eef0f4;
+        }
+
+        .planner-back-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #334155;
+            border-radius: 11px;
+            padding: 9px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .planner-back-inline:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .planner-heading-main {
+            min-width: 0;
+        }
+
+        .planner-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .planner-title-row .planner-title {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .planner-status {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 9px;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #edf0f4;
+            border-radius: 999px;
+            padding: 4px 7px;
+        }
+
+        .planner-status::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .planner-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .planner-action-primary {
+            background: #111827 !important;
+            color: #fff !important;
+            border-color: #111827 !important;
+        }
+
+        .planner-section-label {
+            font-size: 10px;
+            font-weight: 900;
+            color: #94a3b8;
+            letter-spacing: .08em;
+            margin: 0 0 9px;
+        }
+
+        .planner-view-switch {
+            display: flex;
+            width: max-content;
+            max-width: 100%;
+        }
+
+        .planner-view-switch .planner-btn {
+            min-height: 34px;
+        }
+
+        .planner-days-grid {
+            align-items: stretch;
+        }
+
+        .planner-day-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .planner-day-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 10px;
+            font-weight: 900;
+            margin-left: 7px;
+        }
+
+        .planner-day-name {
+            font-weight: 900;
+        }
+
+        .planner-day-meta {
+            display: flex;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .planner-card-footer {
+            margin-top: auto;
+            padding: 0 13px 13px;
+        }
+
+        .planner-card-open {
+            width: 100%;
+            border: 1px dashed #d9deea;
+            background: #fafbfe;
+            color: #475569;
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .planner-card-open:hover {
+            border-color: #c7d2fe;
+            background: #f7f7ff;
+            color: #4338ca;
+        }
+
+        .calendar-cell {
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s, border-color .15s;
+        }
+
+        .calendar-cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .07);
+            border-color: #d9dcf0;
+        }
+
+        .calendar-day-index {
+            font-size: 9px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .day-focus-title-wrap {
+            min-width: 0;
+        }
+
+        .day-focus-subtitle {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .day-focus-edit-story {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            width: 100%;
+            margin-top: 14px;
+            border: 1px solid #dfe3ef;
+            background: #fff;
+            color: #4338ca;
+            border-radius: 11px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 850;
+            cursor: pointer;
+        }
+
+        .planner-footer {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #eef0f4;
+        }
+
+        .planner-tip {
+            color: #94a3b8;
+        }
+
+        @media (max-width: 850px) {
+            body.content-mode .topbar {
+                height: 58px;
+            }
+
+            body.content-mode .topbar .brand span {
+                display: none;
+            }
+
+            body.content-mode .topbar .brand {
+                max-width: 55%;
+            }
+
+            body.content-mode .topbar .actions {
+                margin-right: 0;
+            }
+
+            .planner-workspace-head {
+                grid-template-columns: 1fr auto;
+                gap: 10px;
+                padding-bottom: 12px;
+                margin-bottom: 14px;
+            }
+
+            .planner-back-inline {
+                display: none;
+            }
+
+            .planner-heading-main {
+                grid-column: 1 / -1;
+                grid-row: 1;
+            }
+
+            .planner-toolbar-actions {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                justify-content: space-between;
+            }
+
+            .planner-toolbar-actions .planner-btn {
+                flex: 1;
+            }
+
+            .planner-days-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            html,
+            body,
+            .app {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .topbar {
+                width: 100%;
+                min-width: 0;
+                padding: 9px 10px;
+                gap: 8px;
+            }
+
+            .brand {
+                min-width: 0;
+                max-width: 52%;
+            }
+
+            .brand>div:last-child {
+                min-width: 0;
+            }
+
+            .brand h1,
+            .brand span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .actions {
+                min-width: 0;
+            }
+
+            .planner-view {
+                padding: 10px;
+            }
+
+            .planner-shell {
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .planner-toolbar {
+                align-items: stretch;
+            }
+
+            .planner-heading {
+                width: 100%;
+            }
+
+            .planner-tools {
+                width: 100%;
+            }
+
+            .planner-view-switch {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .planner-view-switch .planner-btn {
+                min-width: 0;
+                padding-inline: 6px;
+            }
+
+            .planner-days-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+
+            .planner-day-card {
+                width: 100%;
+            }
+
+            .planner-field textarea {
+                min-height: 116px;
+            }
+
+            .planner-calendar {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+
+            .calendar-cell {
+                min-height: 0;
+                width: 100%;
+            }
+
+            .day-focus {
+                width: 100%;
+            }
+
+            .day-focus-nav {
+                gap: 8px;
+            }
+
+            .day-focus-title {
+                font-size: 17px;
+                min-width: 0;
+                text-align: center;
+            }
+
+            .day-focus-story {
+                grid-template-columns: 1fr !important;
+            }
+
+            .story-writing-block {
+                min-height: 115px;
+            }
+
+            .planner-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-back {
+                padding-inline: 9px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .brand {
+                max-width: 48%;
+            }
+
+            .brand .logo {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+            }
+
+            .actions .optional,
+            .actions .menu-btn {
+                display: none !important;
+            }
+
+            .actions {
+                margin-right: 0;
+            }
+
+            .planner-title {
+                font-size: 21px;
+            }
+
+            .planner-meta {
+                font-size: 10px;
+            }
+
+            .planner-day-head {
+                padding: 13px;
+            }
+
+            .planner-field {
+                padding-inline: 11px;
+            }
+
+            .story-mini.story-frame {
+                margin-inline: 11px;
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <style id="v7-planner-fixes">
+        /* v7 reliability + UX fixes */
+        #plannerView {
+            box-sizing: border-box;
+        }
+
+        body.content-mode #plannerView {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .planner-shell {
+            box-sizing: border-box;
+        }
+
+        .planner-day-card textarea {
+            overflow: auto;
+        }
+
+        .planner-day-card .planner-field select {
+            appearance: auto;
+        }
+
+        @media (min-width:851px) {
+            .planner-days-grid {
+                grid-template-columns: repeat(7, minmax(0, 1fr));
+            }
+
+            .planner-day-card {
+                min-width: 0;
+            }
+
+            .planner-day-card textarea {
+                min-height: 118px;
+            }
+        }
+
+        @media (max-width:850px) {
+            .planner-workspace-head {
+                width: 100%;
+            }
+
+            .planner-title-row {
+                flex-wrap: wrap;
+            }
+
+            .planner-title-row .planner-title {
+                max-width: 100%;
+            }
+
+            .planner-status {
+                order: 3;
+            }
+
+            .planner-toolbar-actions {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .planner-toolbar-actions .planner-btn,
+            .planner-toolbar-actions .planner-action-primary {
+                min-width: 0;
+            }
+        }
+    </style>
+
+    <style id="v8-ux-fixes">
+        /* v8 — layout, responsive UX and export reliability */
+        html,
+        body {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .app {
+            width: 100%;
+            min-width: 0;
+            min-height: 100dvh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .home-view {
+            width: 100%;
+            min-width: 0;
+            min-height: 0;
+            height: 100%;
+            flex: 1 1 auto;
+            box-sizing: border-box;
+        }
+
+        body.home-mode .home-view {
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+
+        body.home-mode .home-shell {
+            width: min(1120px, 100%);
+            min-width: 0;
+        }
+
+        body.home-mode .workspace-grid,
+        body.home-mode .project-list {
+            min-width: 0;
+        }
+
+        /* Planner desktop: 3 comfortable columns instead of 7 cramped columns. */
+        .planner-days-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            align-items: stretch;
+            gap: 16px;
+        }
+
+        .planner-day-card {
+            min-width: 0;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .planner-day-card .planner-field textarea {
+            min-height: 110px;
+        }
+
+        .planner-card-footer {
+            margin-top: auto;
+        }
+
+        /* Planner export controls */
+        .planner-export-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin: 0 0 16px;
+        }
+
+        .planner-export-row .planner-btn {
+            min-width: 0;
+            width: 100%;
+            justify-content: center;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .planner-export-label {
+            grid-column: 1/-1;
+            margin: 0 0 -2px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #94a3b8;
+        }
+
+        /* Prevent flex/grid children from creating accidental horizontal overflow. */
+        .planner-view,
+        .planner-shell,
+        .planner-workspace-head,
+        .planner-heading-main,
+        .planner-toolbar-actions,
+        .planner-days-grid,
+        .planner-day-card,
+        .day-focus,
+        .day-focus-card,
+        .calendar-cell,
+        .story-writing-block {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        .planner-day-card textarea,
+        .planner-day-card select,
+        .day-focus textarea,
+        .day-focus select {
+            max-width: 100%;
+        }
+
+        @media (max-width:850px) {
+            .home-view {
+                padding: 24px 12px 34px;
+            }
+
+            .home-hero {
+                padding: 8px 0 22px;
+            }
+
+            .home-hero h2 {
+                font-size: 30px;
+            }
+
+            .home-hero p {
+                font-size: 12px;
+                line-height: 1.85;
+            }
+
+            .workspace-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+
+            .workspace-card {
+                width: 100%;
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .workspace-card h3 {
+                font-size: 16px;
+            }
+
+            .project-list {
+                grid-template-columns: 1fr !important;
+            }
+
+            .planner-view {
+                padding: 8px !important;
+            }
+
+            .planner-shell {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 12px !important;
+                border-radius: 16px !important;
+            }
+
+            .planner-workspace-head {
+                display: flex !important;
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+
+            .planner-heading-main {
+                width: 100%;
+            }
+
+            .planner-title-row {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 7px;
+            }
+
+            .planner-title-row .planner-title {
+                flex: 1 1 auto;
+                min-width: 0;
+                font-size: 20px;
+            }
+
+            .planner-status {
+                flex: 0 0 auto;
+            }
+
+            .planner-toolbar-actions {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 7px;
+            }
+
+            .planner-toolbar-actions .planner-btn {
+                flex: 1 1 calc(33.333% - 7px);
+                min-width: 0;
+                padding: 8px 5px;
+                font-size: 10px;
+            }
+
+            .planner-toolbar-actions .planner-action-primary {
+                flex: 1 1 100%;
+            }
+
+            .planner-export-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 7px;
+                margin-bottom: 14px;
+            }
+
+            .planner-export-row .planner-btn {
+                min-height: 38px;
+                font-size: 10px;
+                padding-inline: 5px;
+            }
+
+            .planner-days-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+
+            .planner-day-card {
+                width: 100%;
+            }
+
+            .planner-day-head {
+                min-width: 0;
+            }
+
+            .planner-day-name {
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }
+
+            .planner-field {
+                min-width: 0;
+            }
+
+            .planner-field textarea {
+                min-height: 108px;
+            }
+
+            .planner-calendar {
+                grid-template-columns: 1fr !important;
+            }
+
+            .day-focus-nav {
+                display: grid;
+                grid-template-columns: auto minmax(0, 1fr) auto;
+                gap: 6px;
+            }
+
+            .day-focus-nav .planner-btn {
+                min-width: 0;
+                padding-inline: 8px;
+            }
+
+            .day-focus-title {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 16px;
+            }
+
+            .day-focus-story {
+                grid-template-columns: 1fr !important;
+            }
+
+            .planner-footer {
+                min-width: 0;
+            }
+        }
+
+        @media (max-width:380px) {
+            .home-view {
+                padding-inline: 10px;
+            }
+
+            .home-logo {
+                width: 52px;
+                height: 52px;
+                border-radius: 16px;
+                margin-bottom: 11px;
+            }
+
+            .home-hero h2 {
+                font-size: 27px;
+            }
+
+            .workspace-card {
+                padding: 16px;
+            }
+
+            .planner-view {
+                padding: 6px !important;
+            }
+
+            .planner-shell {
+                padding: 10px !important;
+                border-radius: 14px !important;
+            }
+
+            .planner-title-row .planner-title {
+                font-size: 18px;
+            }
+
+            .planner-status {
+                font-size: 8px;
+                padding: 3px 6px;
+            }
+
+            .planner-toolbar-actions .planner-btn {
+                font-size: 9px;
+                min-height: 36px;
+            }
+
+            .planner-export-row {
+                gap: 6px;
+            }
+
+            .planner-export-row .planner-btn {
+                font-size: 9px;
+                min-height: 36px;
+            }
+
+            .planner-day-card {
+                border-radius: 14px;
+            }
+
+            .planner-day-head {
+                padding: 11px;
+            }
+
+            .planner-field {
+                padding-inline: 10px;
+            }
+
+            .story-mini.story-frame {
+                margin-inline: 10px;
+            }
+
+            .planner-card-footer {
+                padding-inline: 10px;
+            }
+
+            .day-focus-nav .planner-btn {
+                font-size: 9px;
+                padding-inline: 6px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -1577,7 +3272,8 @@
             </div>
             <div class="actions">
                 <button class="btn menu-btn" id="menuBtn">☰ ابزارها</button>
-                <button class="btn" id="tourBtn">? راهنمای سریع</button>
+                <button class="btn nav-back" id="homeBtn" title="بازگشت به صفحه اصلی" aria-label="بازگشت به صفحه اصلی">←
+                    بازگشت</button><button class="btn" id="tourBtn">? راهنمای سریع</button>
                 <button class="btn mobile-quick" id="mobileMoreBtn">☰ بیشتر</button>
                 <button class="btn" id="addBtn">＋ نود جدید</button>
                 <button class="btn optional" id="undoBtn">↶ Undo</button><button class="btn optional" id="redoBtn">↷
@@ -1594,6 +3290,36 @@
                 <button class="btn optional" id="importBtn">ورودی</button>
             </div>
         </header>
+        <section class="home-view" id="homeView">
+            <div class="home-shell">
+                <div class="home-hero">
+                    <div class="home-logo">CV</div>
+                    <h2>Creator OS</h2>
+                    <p>یک فضای ساده برای ساختن Creator Vision و برنامه‌ریزی محتوای هفتگی.</p>
+                </div>
+                <div class="workspace-grid">
+                    <button class="workspace-card vision" id="homeVisionBtn">
+                        <span class="workspace-icon">◈</span>
+                        <h3>Creator Vision</h3>
+                        <p>نقشه‌ی ذهنی برند، WHAT / WHO / WHY، پیام، مخاطب و Story.</p>
+                        <span class="home-cta">ورود به Vision ←</span>
+                    </button>
+                    <button class="workspace-card planner" id="homePlannerBtn">
+                        <span class="workspace-icon">▦</span>
+                        <h3>Content Planner</h3>
+                        <p>برنامه‌ی ۷ روزه با IDEA، FORMAT، INTENSITY و داستان Problem → Pursuit → Payoff.</p>
+                        <span class="home-cta">ورود به Planner ←</span>
+                    </button>
+                </div>
+                <div class="home-projects">
+                    <div class="home-projects-head">
+                        <h3>پروژه‌های اخیر</h3>
+                        <button class="home-new" id="homeNewBtn">＋ پروژه جدید</button>
+                    </div>
+                    <div class="project-list" id="homeProjectList"></div>
+                </div>
+            </div>
+        </section>
         <main class="main">
             <aside class="sidebar" id="sidebar">
                 <h2>ابزار و تنظیمات</h2>
@@ -1675,7 +3401,6 @@
                         <div id="nodes"></div>
                         <div class="empty" id="empty">برای شروع، نود اضافه کن یا از الگوی آماده استفاده کن.</div>
                     </div>
-                    <div id="plannerView" class="planner-view"></div>
                 </div>
                 <div class="hint" id="hint"><span>Drag برای جابه‌جایی • فضای خالی را بکش برای حرکت • دو انگشت برای Zoom
                         • Double-click برای ویرایش</span><button id="hintClose" aria-label="بستن راهنمای میانبرها"
@@ -1683,6 +3408,7 @@
                 <div class="zoom"><button id="zoomOut">−</button><span id="zoomLabel">100%</span><button
                         id="zoomIn">＋</button></div>
             </section>
+            <section id="plannerView" class="planner-view" aria-label="Content Planner"></section>
         </main>
     </div>
 
@@ -1760,7 +3486,7 @@
         const state = {
             nodes: [], links: [], selected: null, connectMode: false,
             scale: 1.15, panX: 0, panY: 0, dragging: null, uniformFormat: false,
-            pages: [], activePageId: null, pageType: 'vision'
+            pages: [], activePageId: null, pageType: 'vision', screen: 'home', plannerView: 'cards', plannerDay: 0
         };
         const history = { undo: [], redo: [], limit: 80 };
         let historyRestoring = false;
@@ -1860,7 +3586,11 @@
         }
 
         function render() {
-            if (state.pageType === 'content') { nodesEl.innerHTML = ''; svg.innerHTML = ''; $('empty').style.display = 'none'; renderPlanner(); applyTransform(); return }
+            if (state.screen === 'home') { refreshModeUI(); renderHome(); return; }
+            if (state.pageType === 'content') {
+                renderPlanner();
+                return;
+            }
             $('plannerView').innerHTML = '';
             nodesEl.innerHTML = '';
             $('empty').style.display = state.nodes.length ? 'none' : 'grid';
@@ -2193,9 +3923,12 @@
             const page = { id: uid('p'), name: name || ((type === 'content') ? 'Content Planner' : 'Creator Vision'), type, nodes: [], links: [], uniformFormat: false, planner: null };
             if (type === 'content') {
                 page.planner = {
-                    days: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+                    days: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'], dayOrderVersion: 2,
                     rows: ['IDEA', 'FORMAT', 'INTENSITY'],
-                    cells: Array.from({ length: 3 }, () => Array(7).fill(''))
+                    cells: Array.from({ length: 3 }, () => Array(7).fill('')),
+                    entries: Array.from({ length: 7 }, () => ({ idea: '', format: 'Reel', intensity: 'Standard', story: { problem: '', pursuit: '', payoff: '' } })),
+                    view: 'cards',
+                    focusDay: 0
                 };
             } else {
                 const n = (title, sub, type, x, y) => page.nodes.push({ id: uid(), title, sub, type, x, y });
@@ -2208,168 +3941,189 @@
             const p = state.pages.find(x => x.id === state.activePageId);
             return p?.planner || null;
         }
+        const FORMAT_GROUPS = [
+            {
+                label: 'فرمت‌های ویدیویی',
+                options: [
+                    'Reel', 'Talking Head', 'B-Roll', 'Talking + B-Roll', 'Voice Over', 'POV', 'Screen Recording',
+                    'Vlog Style', 'Before / After', 'Process / Behind the Scenes', 'Interview', 'Green Screen',
+                    'Text-Based Video', 'Storytelling', 'Live', 'Video'
+                ]
+            },
+            {
+                label: 'فرمت‌های محتوایی غیر ویدیویی',
+                options: ['Carousel', 'Static Post', 'Instagram Story', 'Thread', 'Newsletter', 'Blog Post', 'Podcast / Audio']
+            },
+            {
+                label: 'سایر',
+                options: ['Other']
+            }
+        ];
+        const FORMAT_OPTIONS = FORMAT_GROUPS.flatMap(group => group.options);
+        const FORMAT_LEGACY_MAP = {
+            Reel: 'Reel',
+            Video: 'Video',
+            Post: 'Static Post',
+            Story: 'Instagram Story',
+            Carousel: 'Carousel',
+            Live: 'Live',
+            Thread: 'Thread',
+            Newsletter: 'Newsletter',
+            Podcast: 'Podcast / Audio',
+            Blog: 'Blog Post',
+            Other: 'Other'
+        };
+        const INTENSITY_OPTIONS = ['Quick', 'Standard', 'Deep'];
+        function plannerDefaultEntry() {
+            return { idea: '', format: 'Talking Head', intensity: 'Standard', story: { problem: '', pursuit: '', payoff: '' } };
+        }
         function ensurePlanner(p) {
-            if (!p.planner || typeof p.planner !== 'object') {
-                p.planner = { days: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'], rows: ['IDEA', 'FORMAT', 'INTENSITY'], cells: Array.from({ length: 3 }, () => Array(7).fill('')), dayDetails: Array.from({ length: 7 }, () => ({ idea: '', problem: '', pursuit: '', payoff: '' })) };
+            if (!p.planner || typeof p.planner !== 'object') p.planner = {};
+            const d = p.planner;
+            const faDays = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
+            d.days = faDays;
+            d.rows = ['IDEA', 'FORMAT', 'INTENSITY'];
+            if (!Array.isArray(d.entries)) {
+                d.entries = Array.from({ length: 7 }, (_, i) => {
+                    const entry = plannerDefaultEntry();
+                    if (Array.isArray(d.cells)) {
+                        entry.idea = String(d.cells[0]?.[i] ?? '');
+                        entry.format = String(d.cells[1]?.[i] ?? '') || 'Talking Head';
+                        entry.intensity = String(d.cells[2]?.[i] ?? '') || 'Standard';
+                    }
+                    const old = d.dayDetails?.[i];
+                    if (old) entry.story = { problem: String(old.problem || ''), pursuit: String(old.pursuit || ''), payoff: String(old.payoff || '') };
+                    return entry;
+                });
             }
-            if (!Array.isArray(p.planner.days) || !p.planner.days.length) p.planner.days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-            if (!Array.isArray(p.planner.rows) || !p.planner.rows.length) p.planner.rows = ['IDEA', 'FORMAT', 'INTENSITY'];
-            const cols = p.planner.days.length, rows = p.planner.rows.length;
-            if (!Array.isArray(p.planner.cells)) p.planner.cells = [];
-            p.planner.cells.length = rows;
-            for (let r = 0; r < rows; r++) {
-                if (!Array.isArray(p.planner.cells[r])) p.planner.cells[r] = [];
-                p.planner.cells[r].length = cols;
-                for (let c = 0; c < cols; c++)p.planner.cells[r][c] = String(p.planner.cells[r][c] ?? '');
-                p.planner.rows[r] = String(p.planner.rows[r] ?? '');
+            d.entries.length = 7;
+            for (let i = 0; i < 7; i++) {
+                const e = d.entries[i] && typeof d.entries[i] === 'object' ? d.entries[i] : plannerDefaultEntry();
+                d.entries[i] = e;
+                e.idea = String(e.idea ?? '');
+                e.format = FORMAT_OPTIONS.includes(e.format) ? e.format : (FORMAT_LEGACY_MAP[e.format] || 'Other');
+                e.intensity = INTENSITY_OPTIONS.includes(e.intensity) ? e.intensity : 'Standard';
+                e.story = e.story && typeof e.story === 'object' ? e.story : {};
+                e.story.problem = String(e.story.problem ?? '');
+                e.story.pursuit = String(e.story.pursuit ?? '');
+                e.story.payoff = String(e.story.payoff ?? '');
             }
-            p.planner.days = p.planner.days.map((d, i) => String(d ?? (i === 5 ? 'SAT' : i === 6 ? 'SUN' : '')));
-            if (!Array.isArray(p.planner.dayDetails)) p.planner.dayDetails = [];
-            p.planner.dayDetails.length = cols;
-            for (let i = 0; i < cols; i++) { if (!p.planner.dayDetails[i] || typeof p.planner.dayDetails[i] !== 'object') p.planner.dayDetails[i] = {}; const d = p.planner.dayDetails[i]; d.idea = String(d.idea ?? ''); d.problem = String(d.problem ?? ''); d.pursuit = String(d.pursuit ?? ''); d.payoff = String(d.payoff ?? ''); }
-            return p.planner;
+            if (d.dayOrderVersion !== 2 && Array.isArray(d.entries) && d.entries.length === 7) {
+                const desired = faDays;
+                const oldDays = Array.isArray(d.days) ? d.days.map(String) : [];
+                const aliases = {
+                    'Saturday': 'شنبه', 'Sunday': 'یکشنبه', 'Monday': 'دوشنبه', 'Tuesday': 'سه‌شنبه', 'Wednesday': 'چهارشنبه', 'Thursday': 'پنجشنبه', 'Friday': 'جمعه',
+                    'شنبه': 'شنبه', 'یکشنبه': 'یکشنبه', 'دوشنبه': 'دوشنبه', 'سه‌شنبه': 'سه‌شنبه', 'چهارشنبه': 'چهارشنبه', 'پنجشنبه': 'پنجشنبه', 'جمعه': 'جمعه'
+                };
+                const normalized = oldDays.map(x => aliases[x] || x);
+                const reordered = desired.map(day => {
+                    const idx = normalized.indexOf(day);
+                    return idx >= 0 ? (d.entries[idx] || plannerDefaultEntry()) : plannerDefaultEntry();
+                });
+                // If the legacy planner had no reliable day labels, preserve its existing order
+                // rather than silently moving content to a different day.
+                if (normalized.length !== 7 || normalized.some(x => !desired.includes(x))) d.entries = d.entries.slice(0, 7);
+                else d.entries = reordered;
+            }
+            d.dayOrderVersion = 2;
+            d.view = ['cards', 'calendar', 'focus'].includes(d.view) ? d.view : 'cards';
+            d.focusDay = Math.max(0, Math.min(6, Number(d.focusDay) || 0));
+            d.cells = [
+                d.entries.map(e => e.idea),
+                d.entries.map(e => e.format),
+                d.entries.map(e => e.intensity)
+            ];
+            d.dayDetails = d.entries.map(e => ({ idea: e.idea, problem: e.story.problem, pursuit: e.story.pursuit, payoff: e.story.payoff }));
+            return d;
         }
-        function plannerFocusCell(r, c) {
-            const el = document.querySelector(`.planner-input[data-r="${r}"][data-c="${c}"][data-kind="cell"]`);
-            if (el) { el.focus(); el.select?.() }
+        function syncPlannerEntry(p, i) {
+            const d = ensurePlanner(p), e = d.entries[i];
+            d.cells = [d.entries.map(x => x.idea), d.entries.map(x => x.format), d.entries.map(x => x.intensity)];
+            d.dayDetails = d.entries.map(x => ({ idea: x.idea, problem: x.story.problem, pursuit: x.story.pursuit, payoff: x.story.payoff }));
+            return e;
         }
-        function plannerMoveFocus(r, c, dr, dc) {
-            const p = state.pages.find(x => x.id === state.activePageId), data = p && ensurePlanner(p);
-            if (!data) return;
-            const nr = Math.max(0, Math.min(data.rows.length - 1, r + dr)), nc = Math.max(0, Math.min(data.days.length - 1, c + dc));
-            plannerFocusCell(nr, nc);
-        }
-        function plannerAddRow() {
+        function setPlannerField(day, field, value) {
             const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            checkpoint(); const d = ensurePlanner(p), i = d.rows.length + 1;
-            d.rows.push('ROW ' + i); d.cells.push(Array(d.days.length).fill(''));
-            syncCurrentPage(); save(false); renderPlanner(); toast('ردیف جدید اضافه شد ✓');
+            const d = ensurePlanner(p); checkpoint();
+            if (field === 'story') Object.assign(d.entries[day].story, value);
+            else d.entries[day][field] = value;
+            syncPlannerEntry(p, day); save(false); renderPlanner();
         }
-        function plannerRemoveRow() {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            const d = ensurePlanner(p); if (d.rows.length <= 1) return toast('حداقل یک ردیف باید باقی بماند');
-            checkpoint(); d.rows.pop(); d.cells.pop(); syncCurrentPage(); save(false); renderPlanner(); toast('آخرین ردیف حذف شد ✓');
-        }
-        function plannerAddColumn() {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            checkpoint(); const d = ensurePlanner(p), i = d.days.length + 1;
-            d.days.push('DAY ' + i); d.cells.forEach(row => row.push('')); d.dayDetails.push({ idea: '', problem: '', pursuit: '', payoff: '' });
-            syncCurrentPage(); save(false); renderPlanner(); toast('ستون جدید اضافه شد ✓');
-        }
-        function plannerRemoveColumn() {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            const d = ensurePlanner(p); if (d.days.length <= 1) return toast('حداقل یک ستون باید باقی بماند');
-            checkpoint(); d.days.pop(); d.cells.forEach(row => row.pop()); d.dayDetails.pop(); syncCurrentPage(); save(false); renderPlanner(); toast('آخرین ستون حذف شد ✓');
-        }
-        function plannerReset() {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            if (!confirm('محتوای جدول پاک شود؟ ساختار روزها و ردیف‌ها حفظ می‌شود.')) return;
-            checkpoint(); const d = ensurePlanner(p); d.cells = d.rows.map(() => Array(d.days.length).fill('')); syncCurrentPage(); save(false); renderPlanner(); toast('محتوای جدول پاک شد ✓');
-        }
-        function plannerAutoResize(el) {
-            if (!el) return; el.style.height = 'auto'; el.style.height = Math.max(el.scrollHeight, el.classList.contains('header-input') ? 62 : 42) + 'px';
-        }
-        function plannerInputCommit(el) {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            const d = ensurePlanner(p), r = +el.dataset.r, c = +el.dataset.c, kind = el.dataset.kind;
-            if (kind === 'cell') d.cells[r][c] = el.value;
-            else if (kind === 'row') d.rows[r] = el.value;
-            else if (kind === 'day') d.days[c] = el.value;
-            syncCurrentPage(); save(false); plannerAutoResize(el);
-        }
-        let activePlannerDay = -1;
         function openDayDetail(c) {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (c < 0 || c >= d.days.length) return;
-            activePlannerDay = c; const detail = d.dayDetails[c];
-            $('dayDetailTitle').textContent = `${d.days[c]} — Story Planner`;
-            $('dayIdeaInput').value = detail.idea || d.cells[0]?.[c] || '';
-            $('problemInput').value = detail.problem || ''; $('pursuitInput').value = detail.pursuit || ''; $('payoffInput').value = detail.payoff || '';
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
+            const d = ensurePlanner(p); if (c < 0 || c >= 7) return;
+            activePlannerDay = c;
+            const e = d.entries[c];
+            $('dayDetailTitle').textContent = `${d.days[c]} — داستان روز`;
+            $('dayIdeaInput').value = e.idea; $('problemInput').value = e.story.problem; $('pursuitInput').value = e.story.pursuit; $('payoffInput').value = e.story.payoff;
             $('dayDetailModal').classList.add('open'); $('dayDetailModal').setAttribute('aria-hidden', 'false');
             setTimeout(() => $('dayIdeaInput').focus(), 30);
         }
-        function closeDayDetail() { activePlannerDay = -1; $('dayDetailModal').classList.remove('open'); $('dayDetailModal').setAttribute('aria-hidden', 'true') }
+        function closeDayDetail() { activePlannerDay = -1; $('dayDetailModal').classList.remove('open'); $('dayDetailModal').setAttribute('aria-hidden', 'true'); }
         function saveDayDetail() {
-            const p = state.pages.find(x => x.id === state.activePageId); if (!p || activePlannerDay < 0) return; const d = ensurePlanner(p); checkpoint();
-            d.dayDetails[activePlannerDay] = { idea: $('dayIdeaInput').value, problem: $('problemInput').value, pursuit: $('pursuitInput').value, payoff: $('payoffInput').value };
-            if (d.rows[0] === 'IDEA') d.cells[0][activePlannerDay] = $('dayIdeaInput').value;
-            syncCurrentPage(); save(false); closeDayDetail(); renderPlanner(); toast('داستان روز ذخیره شد ✓');
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p || activePlannerDay < 0) return;
+            const d = ensurePlanner(p); checkpoint();
+            const e = d.entries[activePlannerDay];
+            e.idea = $('dayIdeaInput').value;
+            e.story = { problem: $('problemInput').value, pursuit: $('pursuitInput').value, payoff: $('payoffInput').value };
+            syncPlannerEntry(p, activePlannerDay); save(false); closeDayDetail(); renderPlanner(); toast('داستان روز ذخیره شد ✓');
         }
-
-        function renderPlanner() {
+        function plannerSelectView(view) {
             const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-            const data = ensurePlanner(p), root = $('plannerView'); if (!root) return;
-            const cols = data.days.length, rows = data.rows.length;
-            let html = '<div class="planner-shell">';
-            html += '<div class="planner-head"><div class="planner-heading"><div class="planner-title">' + escapeHtml(p.name || 'CONTENT PLANNER') + '</div><div class="planner-meta">' + rows + ' ردیف · ' + cols + ' ستون · ویرایش مستقیم، Tab برای سلول بعدی، Paste چندسلولی با TSV</div></div>';
-            html += '<div class="planner-tools"><button class="planner-btn" data-planner-action="add-row">＋ ردیف</button><button class="planner-btn" data-planner-action="remove-row">− ردیف</button><button class="planner-btn" data-planner-action="add-col">＋ ستون</button><button class="planner-btn" data-planner-action="remove-col">− ستون</button><button class="planner-btn" data-planner-action="reset">پاک‌کردن محتوا</button></div></div>';
-            html += '<div class="planner-scroll"><div class="planner-grid" style="--planner-cols:' + cols + '">';
-            html += '<div class="planner-cell header corner"><span style="font-size:10px;color:#94a3b8">LABELS</span></div>';
-            data.days.forEach((d, c) => { html += '<div class="planner-cell header"><div class="planner-cell-menu"><button class="planner-mini" title="حذف این ستون" aria-label="حذف ستون ' + escapeHtml(d) + '" data-remove-col="' + c + '">×</button></div><textarea aria-label="نام روز ' + escapeHtml(d) + '" class="planner-input header-input" data-kind="day" data-r="0" data-c="' + c + '" spellcheck="false">' + escapeHtml(d) + '</textarea><button class="day-open-btn" type="button" data-open-day="' + c + '">✎ داستان روز</button></div>' });
-            data.rows.forEach((row, r) => {
-                html += '<div class="planner-cell row-label"><div class="planner-cell-menu"><button class="planner-mini" title="حذف این ردیف" data-remove-row="' + r + '">×</button></div><textarea class="planner-input row-input" data-kind="row" data-r="' + r + '" data-c="0" spellcheck="false">' + escapeHtml(row) + '</textarea></div>';
-                for (let c = 0; c < cols; c++)html += '<div class="planner-cell"><textarea class="planner-input" data-kind="cell" data-r="' + r + '" data-c="' + c + '" spellcheck="true" placeholder="Add content...">' + escapeHtml(data.cells[r][c] || '') + '</textarea></div>';
-            });
-            html += '</div></div><div class="planner-footer"><div class="planner-tip">Space، Enter و متن چندخطی کاملاً پشتیبانی می‌شود. با Paste کردن متن Tab-separated می‌توانی چند سلول را یکجا پر کنی.</div><div>Auto-save ✓</div></div></div>';
+            const d = ensurePlanner(p); d.view = view; p.planner = d; state.plannerView = view; save(false); renderPlanner();
+        }
+        function renderPlanner() {
+            const p = state.pages.find(x => x.id === state.activePageId);
+            const root = $('plannerView');
+            if (!root || !p) return;
+            const d = ensurePlanner(p);
+            state.plannerView = d.view; state.plannerDay = d.focusDay;
+            const viewButton = (v, label, icon) => `<button class="planner-btn ${d.view === v ? 'active-view' : ''}" data-planner-view="${v}" aria-pressed="${d.view === v}">${icon} ${label}</button>`;
+            const formatOptions = (selected) => FORMAT_GROUPS.map(group => `<optgroup label="${escapeHtml(group.label)}">${group.options.map(x => `<option ${x === selected ? 'selected' : ''}>${escapeHtml(x)}</option>`).join('')}</optgroup>`).join('');
+            const intensityOptions = (selected) => INTENSITY_OPTIONS.map(x => `<option ${x === selected ? 'selected' : ''}>${escapeHtml(x)}</option>`).join('');
+            const card = (i) => { const e = d.entries[i]; return `<article class="planner-day-card"><div class="planner-day-head"><div><div class="planner-day-name"><span class="planner-day-number">${String(i + 1).padStart(2, '0')}</span>${escapeHtml(d.days[i])}</div><div class="planner-day-meta">روز ${i + 1} از ۷</div></div><button class="planner-mini" data-open-day="${i}" title="ویرایش داستان روز">✎</button></div><div class="planner-field"><label>IDEA</label><textarea data-day="${i}" data-field="idea" placeholder="ایده، موضوع یا زاویه محتوا…">${escapeHtml(e.idea)}</textarea></div><div class="planner-field"><label>FORMAT</label><select data-day="${i}" data-field="format">${formatOptions(e.format)}</select></div><div class="planner-field"><label>INTENSITY</label><select data-day="${i}" data-field="intensity">${intensityOptions(e.intensity)}</select></div><div class="story-mini story-frame"><div class="story-frame-head"><strong>STORY</strong><span>Problem → Pursuit → Payoff</span></div><div class="story-preview"><span>Problem</span><p>${escapeHtml(e.story.problem || 'مسئله یا تنش اصلی را بنویس…')}</p></div></div><div class="planner-card-footer"><button class="planner-card-open" data-open-day="${i}">ویرایش داستان روز ←</button></div></article>`; };
+            let html = `<div class="planner-shell"><div class="planner-workspace-head"><button class="planner-back-inline" data-planner-back>← بازگشت به پروژه‌ها</button><div class="planner-heading-main"><div class="planner-title-row"><h2 class="planner-title">${escapeHtml(p.name || 'Content Planner')}</h2><span class="planner-status">ذخیره خودکار</span></div><div class="planner-meta">برنامه محتوایی ۷ روزه · از ایده تا داستان</div></div><div class="planner-toolbar-actions">${viewButton('cards', 'کارت‌ها', '▦')}${viewButton('calendar', 'تقویم', '□')}${viewButton('focus', 'تمرکز روز', '◉')}<button class="planner-btn planner-action-primary" data-planner-action="story-edit">ویرایش داستان</button></div></div><div class="planner-export-row"><div class="planner-export-label">خروجی</div><button class="planner-btn" data-planner-export="json">⇩ JSON</button><button class="planner-btn" data-planner-export="csv">⇩ CSV</button><button class="planner-btn" data-planner-export="png">▧ PNG</button><button class="planner-btn" data-planner-export="pdf">▤ PDF</button></div><div class="planner-section-label">هفته جاری</div>`;
+            if (d.view === 'cards') html += `<div class="planner-days-grid">${Array.from({ length: 7 }, (_, i) => card(i)).join('')}</div>`;
+            if (d.view === 'calendar') html += `<div class="planner-calendar">${Array.from({ length: 7 }, (_, i) => { const e = d.entries[i]; return `<div class="calendar-cell" data-open-day="${i}" role="button" tabindex="0"><h4>${escapeHtml(d.days[i])}</h4><div class="calendar-day-index">روز ${i + 1}</div><div class="calendar-chip"><b>IDEA</b>${escapeHtml(e.idea || '—')}</div><div class="calendar-chip"><b>FORMAT</b>${escapeHtml(e.format)}</div><div class="calendar-chip"><b>INTENSITY</b>${escapeHtml(e.intensity)}</div><div class="calendar-chip"><b>STORY</b>${escapeHtml(e.story.problem || '—')}</div></div>` }).join('')}</div>`;
+            if (d.view === 'focus') { const i = d.focusDay, e = d.entries[i]; html += `<div class="day-focus"><div class="day-focus-nav"><button class="planner-btn" data-focus="-1" ${i === 0 ? 'disabled' : ''}>→ روز قبل</button><div class="day-focus-title-wrap"><div class="day-focus-title">${escapeHtml(d.days[i])}</div><div class="day-focus-subtitle">روز ${i + 1} از ۷</div></div><button class="planner-btn" data-focus="1" ${i === 6 ? 'disabled' : ''}>روز بعد ←</button></div><div class="day-focus-card"><div class="planner-field"><label>IDEA</label><textarea data-day="${i}" data-field="idea" placeholder="ایده، موضوع یا زاویه محتوا…">${escapeHtml(e.idea)}</textarea></div><div class="planner-field"><label>FORMAT</label><select data-day="${i}" data-field="format">${formatOptions(e.format)}</select></div><div class="planner-field"><label>INTENSITY</label><select data-day="${i}" data-field="intensity">${intensityOptions(e.intensity)}</select></div><div class="day-focus-story"><button class="story-writing-block problem" data-open-day="${i}"><span>01 · Problem</span><p>${escapeHtml(e.story.problem || 'مسئله یا تنش اصلی…')}</p></button><button class="story-writing-block pursuit" data-open-day="${i}"><span>02 · Pursuit</span><p>${escapeHtml(e.story.pursuit || 'تلاش، مسیر یا کشمکش…')}</p></button><button class="story-writing-block payoff" data-open-day="${i}"><span>03 · Payoff</span><p>${escapeHtml(e.story.payoff || 'نتیجه یا تغییری که اتفاق می‌افتد…')}</p></button></div><button class="day-focus-edit-story" data-open-day="${i}">✎ باز کردن و نوشتن داستان کامل</button></div></div>`; }
+            html += `<div class="planner-footer"><div class="planner-tip">هر تغییری خودکار ذخیره می‌شود. برای نوشتن کامل داستان، روی قاب Story همان روز کلیک کن.</div><div>۷ روز · آماده برای نوشتن</div></div></div>`;
             root.innerHTML = html;
-
-            root.querySelectorAll('.planner-input').forEach(el => {
-                plannerAutoResize(el);
-                el.addEventListener('focus', () => {
-                    el.dataset.before = el.value;
-                    el.closest('.planner-cell')?.classList.add('selected-cell');
-                    checkpoint();
-                });
-                el.addEventListener('blur', () => {
-                    el.closest('.planner-cell')?.classList.remove('selected-cell');
-                    const before = el.dataset.before ?? '', after = el.value;
-                    if (before !== after) toast('ذخیره شد ✓');
-                });
-                el.addEventListener('input', () => plannerInputCommit(el));
-                el.addEventListener('keydown', e => {
-                    const r = +el.dataset.r, c = +el.dataset.c, kind = el.dataset.kind;
-                    if (e.key === 'Tab' && kind === 'cell') {
-                        e.preventDefault();
-                        plannerMoveFocus(r, c, 0, e.shiftKey ? -1 : 1);
-                    } else if (e.key === 'Escape') {
-                        e.preventDefault();
-                        el.value = el.dataset.before ?? el.value; plannerInputCommit(el); el.blur();
-                    } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                        e.preventDefault(); el.blur();
-                    }
-                });
-                el.addEventListener('paste', e => {
-                    const text = e.clipboardData?.getData('text/plain') || '';
-                    if (!text.includes('\t') && !text.includes('\\n')) return;
-                    e.preventDefault();
-                    const lines = text.replace(/\r/g, '').split('\n').filter((line, i, a) => !(i === a.length - 1 && !line));
-                    const p = state.pages.find(x => x.id === state.activePageId); if (!p) return;
-                    const d = ensurePlanner(p), r = +el.dataset.r, c = +el.dataset.c;
-                    checkpoint();
-                    lines.forEach((line, ri) => {
-                        line.split('\t').forEach((value, ci) => {
-                            const rr = r + ri, cc = c + ci;
-                            if (rr < d.rows.length && cc < d.days.length) d.cells[rr][cc] = value;
-                        });
-                    });
-                    syncCurrentPage(); save(false); renderPlanner();
-                    requestAnimationFrame(() => plannerFocusCell(r, c));
-                    toast('چند سلول با هم وارد شد ✓');
-                });
+            root.querySelectorAll('[data-planner-view]').forEach(b => b.onclick = () => plannerSelectView(b.dataset.plannerView));
+            root.querySelectorAll('[data-planner-export]').forEach(b => b.onclick = () => {
+                const kind = b.dataset.plannerExport;
+                if (kind === 'json') return downloadPlannerJson();
+                if (kind === 'csv') return downloadPlannerCsv();
+                if (kind === 'png') return downloadPng();
+                if (kind === 'pdf') return downloadPdf();
             });
-            root.querySelectorAll('[data-open-day]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); openDayDetail(+btn.dataset.openDay) }));
-            root.querySelectorAll('[data-planner-action]').forEach(btn => btn.addEventListener('click', () => {
-                const a = btn.dataset.plannerAction;
-                if (a === 'add-row') plannerAddRow(); if (a === 'remove-row') plannerRemoveRow(); if (a === 'add-col') plannerAddColumn(); if (a === 'remove-col') plannerRemoveColumn(); if (a === 'reset') plannerReset();
-            }));
-            root.querySelectorAll('[data-remove-row]').forEach(btn => btn.addEventListener('click', e => {
-                e.stopPropagation(); const idx = +btn.dataset.removeRow, p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (d.rows.length <= 1) return toast('حداقل یک ردیف باید باقی بماند'); checkpoint(); d.rows.splice(idx, 1); d.cells.splice(idx, 1); syncCurrentPage(); save(false); renderPlanner();
-            }));
-            root.querySelectorAll('[data-remove-col]').forEach(btn => btn.addEventListener('click', e => {
-                e.stopPropagation(); const idx = +btn.dataset.removeCol, p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const d = ensurePlanner(p); if (d.days.length <= 1) return toast('حداقل یک ستون باید باقی بماند'); checkpoint(); d.days.splice(idx, 1); d.cells.forEach(row => row.splice(idx, 1)); d.dayDetails.splice(idx, 1); syncCurrentPage(); save(false); renderPlanner();
-            }));
+            root.querySelectorAll('[data-open-day]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); openDayDetail(+b.dataset.openDay) }));
+            root.querySelectorAll('.calendar-cell[data-open-day]').forEach(b => b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDayDetail(+b.dataset.openDay) } }));
+            root.querySelectorAll('[data-day][data-field]').forEach(el => { el.addEventListener('focus', () => { el.dataset.before = el.value }); el.addEventListener('change', () => setPlannerField(+el.dataset.day, el.dataset.field, el.value)); el.addEventListener('blur', () => { if (el.tagName === 'TEXTAREA' && el.dataset.before !== el.value) setPlannerField(+el.dataset.day, el.dataset.field, el.value) }); });
+            root.querySelectorAll('[data-focus]').forEach(b => b.onclick = () => { const next = Math.max(0, Math.min(6, d.focusDay + (+b.dataset.focus))); if (next === d.focusDay) return; d.focusDay = next; save(false); renderPlanner(); });
+            root.querySelectorAll('[data-planner-action="story-edit"]').forEach(b => b.onclick = () => openDayDetail(d.focusDay));
+            root.querySelectorAll('[data-planner-back]').forEach(b => b.onclick = openHome);
+        }
+        function renderHome() {
+            const list = $('homeProjectList'); if (!list) return;
+            list.innerHTML = state.pages.map(p => `<button class="project-item" data-project="${p.id}"><strong>${escapeHtml(p.name || 'Untitled')}</strong><small>${p.type === 'content' ? 'Content Planner' : 'Creator Vision'}</small></button>`).join('') || '<div style="color:#94a3b8;font-size:11px">هنوز پروژه‌ای ساخته نشده است.</div>';
+            list.querySelectorAll('[data-project]').forEach(b => b.onclick = () => openProject(b.dataset.project));
+        }
+        function openProject(id) {
+            const p = state.pages.find(x => x.id === id); if (!p) return;
+            syncCurrentPage(); state.activePageId = p.id; state.pageType = p.type || 'vision'; state.nodes = p.nodes || []; state.links = p.links || []; state.uniformFormat = !!p.uniformFormat; state.screen = 'workspace'; state.selected = null;
+            save(false); updatePageUI(); refreshModeUI(); render(); if (state.pageType !== 'content') requestAnimationFrame(() => fit());
+        }
+        function openHome() {
+            syncCurrentPage(); save(false); state.screen = 'home'; refreshModeUI(); renderHome();
+        }
+        function createWorkspace(type) {
+            const defaults = type === 'content' ? 'Content Planner' : 'Creator Vision';
+            const name = prompt('نام پروژه:', defaults); if (name === null) return;
+            const p = makePage(name.trim() || defaults, type); state.pages.push(p); openProject(p.id);
         }
         function refreshModeUI() {
-            const content = state.pageType === 'content';
+            const content = state.screen === 'workspace' && state.pageType === 'content';
+            document.body.classList.toggle('home-mode', state.screen === 'home');
             document.body.classList.toggle('content-mode', content);
             const sidebar = document.getElementById('sidebar');
             if (sidebar) {
@@ -2385,7 +4139,7 @@
             p.nodes = state.nodes; p.links = state.links; p.uniformFormat = !!state.uniformFormat; p.type = state.pageType; if (p.type === 'content') p.planner = ensurePlanner(p);
         }
         function loadPage(id) {
-            syncCurrentPage(); const p = state.pages.find(x => x.id === id); if (!p) return; state.activePageId = p.id; state.pageType = p.type; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = !!p.uniformFormat; state.selected = null; state.panX = 0; state.panY = 0; render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast(`صفحه «${p.name}» فعال شد`)
+            syncCurrentPage(); const p = state.pages.find(x => x.id === id); if (!p) return; state.activePageId = p.id; state.pageType = p.type; state.screen = 'workspace'; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = !!p.uniformFormat; state.selected = null; state.panX = 0; state.panY = 0; render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast(`صفحه «${p.name}» فعال شد`)
         }
         function updatePageUI() {
             const sel = $('pageSelect'); if (!sel) return; sel.innerHTML = state.pages.map(p => `<option value="${p.id}">${escapeHtml(p.name)} — ${p.type === 'content' ? 'Content Planner' : 'Vision Board'}</option>`).join(''); sel.value = state.activePageId || '';
@@ -2407,7 +4161,7 @@
             render(); save(false); updatePageUI(); refreshModeUI(); if (state.pageType !== 'content') requestAnimationFrame(() => fit()); toast('صفحه حذف شد ✓');
         }
         function openPageModal() { $('newPageName').value = ''; $('newPageType').value = 'vision'; $('pageModal').classList.add('open'); setTimeout(() => $('newPageName').focus(), 50) }
-        function createPage() { checkpoint(); const name = $('newPageName').value.trim() || ($('newPageType').value === 'content' ? 'Content Planner' : 'Creator Vision'); const p = makePage(name, $('newPageType').value); syncCurrentPage(); state.pages.push(p); state.activePageId = p.id; state.pageType = p.type; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = false; state.selected = null; $('pageModal').classList.remove('open'); render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast('صفحه جدید ساخته شد ✓') }
+        function createPage() { checkpoint(); const name = $('newPageName').value.trim() || ($('newPageType').value === 'content' ? 'Content Planner' : 'Creator Vision'); const p = makePage(name, $('newPageType').value); syncCurrentPage(); state.pages.push(p); state.activePageId = p.id; state.pageType = p.type; state.screen = 'workspace'; state.nodes = p.nodes; state.links = p.links; state.uniformFormat = false; state.selected = null; $('pageModal').classList.remove('open'); render(); save(false); updatePageUI(); refreshModeUI(); requestAnimationFrame(() => { if (state.pageType !== 'content') fit() }); toast('صفحه جدید ساخته شد ✓') }
         function duplicatePage() { checkpoint(); syncCurrentPage(); const p = state.pages.find(x => x.id === state.activePageId); if (!p) return; const copy = JSON.parse(JSON.stringify(p)); copy.id = uid('p'); copy.name = p.name + ' — Copy'; copy.nodes.forEach(n => n.id = uid()); const idMap = new Map(p.nodes.map((n, i) => [n.id, copy.nodes[i].id])); copy.links = copy.links.map(l => ({ ...l, id: uid('l'), from: idMap.get(l.from) || l.from, to: idMap.get(l.to) || l.to })); state.pages.push(copy); state.activePageId = copy.id; state.pageType = copy.type; state.nodes = copy.nodes; state.links = copy.links; state.uniformFormat = copy.uniformFormat; render(); save(false); updatePageUI(); refreshModeUI(); toast('صفحه کپی شد ✓') }
         function loadStorage() {
             try {
@@ -2590,46 +4344,19 @@
         }
 
         function buildPlannerExportHost() {
-            const p = state.pages.find(x => x.id === state.activePageId);
-            if (!p || p.type !== 'content') return null;
-            const d = ensurePlanner(p);
-            const host = makeExportHost();
-            const sheet = document.createElement('div');
-            sheet.className = 'export-sheet';
-
-            const title = document.createElement('div');
-            title.className = 'export-sheet-title';
-            title.textContent = p.name || 'CONTENT PLANNER';
-            sheet.appendChild(title);
-
-            const meta = document.createElement('div');
-            meta.className = 'export-sheet-meta';
-            meta.textContent = `${d.rows.length} ردیف · ${d.days.length} ستون · خروجی کامل Content Planner`;
-            sheet.appendChild(meta);
-
-            const table = document.createElement('div');
-            table.className = 'export-table';
-            table.style.gridTemplateColumns = `180px repeat(${d.days.length}, 210px)`;
-            table.style.gridTemplateRows = `108px repeat(${d.rows.length}, 150px)`;
-
-            const addCell = (value, cls = '') => {
-                const cell = document.createElement('div');
-                cell.className = `export-table-cell ${cls}`.trim();
-                cell.textContent = textForExport(value);
-                table.appendChild(cell);
-            };
-
-            addCell('LABELS', 'head corner');
-            d.days.forEach(day => addCell(day, 'head'));
-            d.rows.forEach((row, r) => {
-                addCell(row, 'row-label');
-                for (let c = 0; c < d.days.length; c++) addCell(d.cells?.[r]?.[c] || '');
-            });
+            const p = state.pages.find(x => x.id === state.activePageId); if (!p || p.type !== 'content') return null;
+            const d = ensurePlanner(p), host = makeExportHost(), sheet = document.createElement('div'); sheet.className = 'export-sheet';
+            const title = document.createElement('div'); title.className = 'export-sheet-title'; title.textContent = p.name || 'CONTENT PLANNER'; sheet.appendChild(title);
+            const meta = document.createElement('div'); meta.className = 'export-sheet-meta'; meta.textContent = '۷ روز · IDEA / FORMAT / INTENSITY · Story: Problem → Pursuit → Payoff'; sheet.appendChild(meta);
+            const table = document.createElement('div'); table.className = 'export-table'; table.style.gridTemplateColumns = '170px repeat(7,210px)'; table.style.gridTemplateRows = '108px repeat(3,150px)';
+            const add = (v, cls = '') => { const c = document.createElement('div'); c.className = `export-table-cell ${cls}`.trim(); c.textContent = textForExport(v); table.appendChild(c) };
+            add('FIELDS', 'head corner'); d.days.forEach(x => add(x, 'head'));
+            [['IDEA', d.entries.map(e => e.idea)], ['FORMAT', d.entries.map(e => e.format)], ['INTENSITY', d.entries.map(e => e.intensity)]].forEach(([label, vals]) => { add(label, 'row-label'); vals.forEach(v => add(v)) });
             sheet.appendChild(table);
-            host.appendChild(sheet);
-            return { host, sheet };
+            const storyTitle = document.createElement('div'); storyTitle.className = 'export-sheet-title'; storyTitle.style.fontSize = '22px'; storyTitle.style.marginTop = '28px'; storyTitle.textContent = 'Story Overview'; sheet.appendChild(storyTitle);
+            d.entries.forEach((e, i) => { const box = document.createElement('div'); box.className = 'story-export-idea'; box.style.marginBottom = '10px'; box.innerHTML = `<div class="label">${escapeHtml(d.days[i])} · ${escapeHtml(e.idea || 'بدون ایده')}</div><div class="value">Problem: ${escapeHtml(e.story.problem || '—')}\nPursuit: ${escapeHtml(e.story.pursuit || '—')}\nPayoff: ${escapeHtml(e.story.payoff || '—')}</div>`; sheet.appendChild(box) });
+            host.appendChild(sheet); return { host, sheet };
         }
-
         function buildStoryExportHost(dayIndex) {
             const p = state.pages.find(x => x.id === state.activePageId);
             if (!p || p.type !== 'content') return null;
@@ -2753,6 +4480,43 @@
             } catch (err) { console.error(err); toast('ساخت PDF ناموفق بود') }
         }
 
+        function plannerExportData() {
+            const p = state.pages.find(x => x.id === state.activePageId);
+            if (!p || p.type !== 'content') return null;
+            const d = ensurePlanner(p);
+            return {
+                version: 1,
+                type: 'content-planner',
+                exportedAt: new Date().toISOString(),
+                name: p.name || 'Content Planner',
+                days: d.days.slice(),
+                entries: d.entries.map((e, i) => ({
+                    day: d.days[i],
+                    idea: e.idea,
+                    format: e.format,
+                    intensity: e.intensity,
+                    story: { ...e.story }
+                }))
+            };
+        }
+        function downloadPlannerJson() {
+            const data = plannerExportData();
+            if (!data) return toast('پروژه Content Planner پیدا نشد');
+            const name = safeExportName(data.name, 'content-planner');
+            downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }), `${name}.json`);
+            toast('JSON برنامه محتوا دانلود شد ✓');
+        }
+        function downloadPlannerCsv() {
+            const data = plannerExportData();
+            if (!data) return toast('پروژه Content Planner پیدا نشد');
+            const rows = [['روز', 'IDEA', 'FORMAT', 'INTENSITY', 'Problem', 'Pursuit', 'Payoff'], ...data.entries.map(e => [e.day, e.idea, e.format, e.intensity, e.story.problem, e.story.pursuit, e.story.payoff])];
+            const csv = rows.map(row => row.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+            const bom = '\uFEFF';
+            const name = safeExportName(data.name, 'content-planner');
+            downloadBlob(new Blob([bom + csv], { type: 'text/csv;charset=utf-8' }), `${name}.csv`);
+            toast('CSV برنامه محتوا دانلود شد ✓');
+        }
+
         async function downloadDayStoryPng() {
             if (activePlannerDay < 0) return toast('ابتدا یک روز را باز کن');
             try {
@@ -2839,7 +4603,7 @@
         $('tourPrev').onclick = () => { if (tourIndex > 0) { tourIndex--; renderTourStep() } };
         $('tourNext').onclick = () => { if (tourIndex < tourSteps.length - 1) { tourIndex++; renderTourStep() } else endTour(true) };
         $('tourBackdrop').onclick = () => endTour(true);
-        $('mobileMoreBtn').onclick = () => $('sidebar').classList.toggle('open');
+        $('mobileMoreBtn').onclick = () => { if (state.pageType !== 'content') $('sidebar').classList.toggle('open'); };
         $('sidebarPngBtn').onclick = () => { downloadPng(); $('sidebar').classList.remove('open') }; $('sidebarPdfBtn').onclick = () => { downloadPdf(); $('sidebar').classList.remove('open') }; $('sidebarFormatHBtn').onclick = () => { formatAllNodes('horizontal'); $('sidebar').classList.remove('open') }; $('sidebarFormatVBtn').onclick = () => { formatAllNodes('vertical'); $('sidebar').classList.remove('open') };
         window.addEventListener('resize', () => { if (!$('tourCard').hidden) renderTourStep(); });
         if (!localStorage.getItem(TOUR_KEY)) setTimeout(() => startTour(false), 900);
@@ -2873,6 +4637,11 @@
         $('subInput').oninput = e => { const n = state.nodes.find(x => x.id === state.selected); if (n) { checkpointSidebarEdit(); n.sub = e.target.value; render() } }
         $('typeInput').onchange = e => { const n = state.nodes.find(x => x.id === state.selected); if (n) { checkpoint(); n.type = e.target.value; render() } }
         $('menuBtn').onclick = () => $('sidebar').classList.toggle('open');
+        $('homeBtn').onclick = openHome;
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.screen === 'workspace' && !document.querySelector('.modal.open')) openHome(); });
+        $('homeVisionBtn').onclick = () => createWorkspace('vision');
+        $('homePlannerBtn').onclick = () => createWorkspace('content');
+        $('homeNewBtn').onclick = () => createWorkspace('vision');
 
         let spaceDown = false;
         let panDrag = null;
@@ -3000,7 +4769,7 @@
                 render()
             }
         });
-        load(); updatePageUI(); refreshModeUI(); render(); setTimeout(() => { if (state.pageType !== 'content') fit() }, 80);
+        load(); updatePageUI(); refreshModeUI(); render(); setTimeout(() => { if (state.screen !== 'home' && state.pageType !== 'content') fit() }, 80);
     </script>
 </body>
 
